@@ -130,7 +130,7 @@ Can you think of situations where these should be kept as part of the dataset
 
 ### **Taking a closer look at patterns**
 
-**Step 18. Stacked taxon composition bar plots**
+**Step 19. Stacked taxon composition bar plots**
 
 At this point, we have many alternatives that depend on the study goals. Let's say that, in our case, the goal is to compare the overall community structure between different groups (with individual OTUs being of limited interest at this stage).
 
@@ -154,7 +154,7 @@ Great! But let's take a moment to think:
 Based on the plot, what would you anticipate - are the groups likely to differ?
 Can you think of another way to visualise the data?
 ```
-**Step 19. Other ways to visualize the data**
+**Step 20. Other ways to visualize the data**
 
 Going back to `ps_pruned.Rda`, let's also visualise the data using a multivariate ordination. For this, first perform a CLR transformation using the `Transform OTU counts tool`.
 
@@ -182,7 +182,7 @@ When might you want to use db-RDA rather than nMDS?
 
 ### **Diving into statistics**
 
-**Step 20.PERMANOVA**
+**Step 21. PERMANOVA**
 
 Ok! We're ready to run some statistical tests now.
 Let's proceed with a permutational multivariate analysis of variance (PERMANOVA).
@@ -209,7 +209,7 @@ Does the result match your earlier anticipations based on inspecting the ordinat
 
 There are also post-hoc pairwise tests for further community comparisons. We do not need those for the present dataset, since we are only comparing two groups at a time.
 
-**Step 21.DESeq2**
+**Step 22. DESeq2**
 
 If we were interested in OTU-level differences between sample groups, we could turn to DESeq2 instead of PERMANOVA. For this, let's return to the untransformed dataset (`ps_pruned.Rda`).
 

@@ -1,0 +1,175 @@
+---
+output:
+  rmdformats::html_clean:
+    highlight: kate
+---
+
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+## Video 1: Tool Overview and Data Importing
+
+### Introduction
+
+Welcome everybody, my name is Jesse Harrison and I work as a data scientist at CSC - IT Center for Science. In this series of four videos I will discuss steps for microbial community analysis using CSC's Chipster platform. The videos will cover tools for data tidying and visualization, as well as statistical tests used for community comparisons. The videos begin from a stage assuming that you have used the Mothur software package to pre-process your data to the point where you have produced a FASTA file with chimeric sequences removed, as well as a Mothur count file and a taxonomy assignment file. 
+
+In this particular video I will go through an overview of different tools and afterwards we will have a closer look at data importing. So let's get started!
+
+### Slide 1
+
+We can begin with a general overview of different steps we can take to process and analyze an amplicon sequencing data set. I will illustrate these using a flow chart providing a high-level summary of different steps that we might typically follow when the goal of the study is to compare the structure and composition of microbial communities.
+
+The first step in our analysis workflow is to create some phyloseq input files using Mothur. Phyloseq is an R package for microbial community analysis that many of the Chipster microbial community analysis tools are based on.
+
+Once we have created a set of suitable input files, we can import those using phyloseq. This results in the creation of a phyloseq object. Any downstream steps as part of the analytical workflow will make use of this object.
+
+After the data have been imported as a phyloseq object, we have various options. There are several tools that provide different summaries and information on the imported data. For example, it is possible to calculate different alpha diversity indices. It is also possible to rarefy the data to even depth. We will discuss rarefying to even depth in the next video, but for now it suffices to know that this is an optional step.
+
+Before further work, such as data transformations and statistics, it is often a good idea to tidy the data, for example by removing low-abundance sequences. Chipster has a number of options for this, including removing singletons and doubletons, and filtering out selected microbial taxa.
+
+Once the data have been tidied, we can move onto data transformation. The data transformation tool is a crucial one to Chipster workflows using microbial community data and we will cover that in detail at a separate stage, in a later video. 
+
+We might, for example, transform our data into a format that is suitable with the DESeq2 R package for differential abundance comparisons. This step also produces a second transformed data set using the variance stabilising transformation available in DESeq2.
+
+It is also possible to perform relative abundance conversions and to visualize the resulting data using bar plots.
+
+Following data transformation, one can compute distance matrices that can be used as the input for multivariate ordinations and significance tests. Multivariate ordinations allow one to visualize variation in microbial community structure using 2D plots. 
+
+Global significance tests can be used to test for overall differences in community structure. If the test results are significant, they can be followed up by further tests. 
+
+Further tests enable pairwise comparisons. In other words, they can be used to determine where exactly the differences revealed by a global test can be found.
+
+Finally, it is possible to perform operational taxonomic unit (or OTU) differential abundance comparisons using DEseq2.
+
+### Slide 2
+
+That was a lot of information! Now let's take a closer look at the steps involved in importing your data using phyloseq. Just to remind you, phyloseq is a broad-use R package that's used in many of the microbial community analysis tools available in Chipster.
+
+So for importing your data using phyloseq, the first step is to generate some phyloseq input files using Mothur. I have an image here in this slide that shows different parameters available for the Generate phyloseq input files tool. When using this tool, there are a number of things we must specify.
+
+### Slide 3
+
+The type of data can correspond to one of two options. The first is 16S, 18S or archaeal data. The other option is internal transcribed spacer (or ITS) data.
+
+The cutoff value corresponds to the percent dissimilarity threshold used for OTU clustering. For example, a cutoff value of 0.03 stands for 3% dissimilarity (or 97% similarity), which is often used as a threshold for OTU clustering.
+
+We also have to specify three input files: a FASTA file with sequences following chimera removal, a count table file and a sequence taxonomy assignment file.
+
+### Slide 4
+
+Running the Generate input files for phyloseq tool produces a number of files:
+
+- A .shared file associated with a phenodata file
+- And a consensus taxonomy file
+
+The phenodata file is a table that you can edit using the Chipster interface. It contains unique IDs for each sample and you can also use it to indicate different sample groupings, for example different experimental treatments.
+
+The screenshot I have on this slide shows how a phenodata file is organised. It is arranged as a table with column names on the top and different values entered in each cell. The sample column is on the far left and contains unique IDs for each microbial community. In this example, we also have two columns that have been left empty and two, called chiptype and group, that have been used to indicate group membership. Keep in mind that currently the groups need to be indicated using letters rather than numbers, for example A and B rather than 1 or 2.
+
+The phenodata file is important as that will be used as the basis of steps that come afterwards in the analytical workflow, whether that is for data visualization or statistical analyses.
+
+### Slide 5
+
+Once we have created phyloseq input files and filled in the phenodata file, we can convert the files into a phyloseq object. On this slide I have another screenshot showing different parameters available for the Conver Mothur files into phyloseq object tool.
+
+At the top of the parameter list we have a section saying "Phenodata variable with sequencing sample IDs". This should correspond to that column in the phenodata table that includes unique IDs for each microbial community. 
+
+Underneath that, we have sections for specifying the shared and consensus taxonomy files. When selecting these files, the tool will automatically use the phenodata table associated with the shared file.
+
+### Slide 6
+
+Converting the input files into a phyloseq object will produce two things:
+
+- The phyloseq object, which is stored as a Rda (or a so-called R data) file
+- A text summary of the imported object.
+
+The image on the left shows an example text summary of an imported phyloseq object. The top part shows that the phyloseq object is divided into three sections: 
+
+- An OTU table containing information for, in this case, 1114 taxa and a total of 19 different microbial community profiles. This contains OTU abundance information.
+
+- A sample data table with information on sample variables. This includes information on sample groupings and is produced using the phenodata file.
+
+- A taxonomy table with taxonomic affiliations. In this case, the data have been classified using six different taxonomic levels, ranging from Domain to Genus.
+
+The text summary in Chipster also prints out the unique IDs of each community profile and a list of variables used in the phenodata table. These are useful for checking that the data were correctly imported.
+
+The Rda file, then, can be used as the input for the next steps in the analysis workflow, which will be detailed in the next video. Thanks for joining and let's move on to the next part!
+
+## Video 2: Data Inspection and Tidying
+
+### Slide 1
+
+Welcome to Part 2 of this short series on different Chipster tools for microbiome data tidying, visualization and statistical analysis. In this video, we will focus on tools for inspecting and tidying our data, so that we can ensure they are fit for downstream analyses as part of an analytical workflow.
+
+The first tool to consider is one called Sequence numbers, rarefaction curve and alpha diversity estimates. I have two images on this slide, let's start with the one on the right. This image is a screenshot of a text file produced by the tool. 
+
+On the top we have a list of sequence IDs (like F3D0 and F3D1) and associated numbers of sequences. Depending on the community profile, the numbers of sequences range from 2629 and 16662. This type of variation in sequencing depth is typical to microbial community data sets. 
+
+On the bottom of the screenshot on the right, there is a list of alpha diversity estimates. Alpha diversity is a term used to refer to within-community diversity. The first column contains unique IDs (only a smaller section is shown to better display the data on the slide). Moving from left to right, we have several other columns, starting with observed numbers of OTUs. We also have columns for the Chao1 index (which is an estimate of taxon richness based on abundance data), the Shannon diversity index (which takes into account both taxon richness and evenness), and Pielou's evenness. Here, richness pertains to the number of different taxa in a particular community, while evenness pertains to the relative abundance of different taxa within a community. Low evenness means that certain taxa in the community are more dominant than others, while a higher value would correspond to a more even distribution of taxon abundances. Diversity is influenced by both taxon richness and evenness: when richness and evenness increase, generally so does diversity. The tool also provides an option to tabulate some selected phenodata variable together with alpha diversity estimates to make the data easier to read. In this case, the data have been tabulated together with the "group" column in the phenodata table.
+
+Then we have the image on the left, which is a rarefaction curve. This is a line plot with numbers of sequences on the x axis, with increments of 5000 sequences. The values range from zero to over fifteen thousand. The y axis has numbers of observed OTUs, with increments of one hundred. The values range from zero to four hundred. Several lines are shown on the plot, corresponding to different microbial community profiles. These types of plots are used to visualise the relationship between sampling effort (in our case, sequencing depth) and the number of OTUs. If the lines approach the asymptote, this means that there are no more new taxa to discover. In practice, with microbial data sets, that asymptote is very rarely reached. These types of plots are also useful for visualising differences in sequencing depth within a given data set. In our case, certain communities have close to or over 15000 sequences, whereas others have far less.
+
+### Slide 2
+
+Variation in sequencing depth is a source of uncertainty in microbial community analyses and there are many different ways to deal with it. One option that has been traditionally used involves rarefying to even depth, that is, subsampling the data to achieve a common sequencing depth for all community profiles. As you can imagine, this can result in the loss of considerable amounts of data. Rarefying to even depth is possible in Chipster but it should be noted that there is also considerable evidence for drawbacks to this method. If you're interested in finding out more, I would suggest looking up a very often-cited paper published in the journal PLOS Computational Biology in 2014 by Paul McMurdie and Susan Holmes, called Waste Not, Want Not: Why Rarefying Microbiome Data Is Inadmissible. Chipster also offers alternatives for rarefying to even depth. These include particular ways to transform data and internal corrections for unequal library sizes used by the DESeq2 package.   
+
+### Slide 3
+
+The next thing to consider is the available selection of taxon-level clean-up tools. First of all, it is possible to produce an overview of the taxon composition of a particular phyloseq object at some user-specified level (for example, the phylum level). There are also tools for removing undesired sequences from the data set, for example by retaining only those sequences that have been classified as Bacteria or Archaea. It might be surprising but many microbial community data sets also include chloroplast and mitochondrial sequences, and it is possible to remove these if they are not of interest. If, when using the taxon composition overview tool, you discover some particular taxon that you'd like to remove, that is possible by manually entering the name of the taxon you want to exclude. Overall, these functionalities are divided into a set of three different tools.
+
+### Slide 4
+
+Options for tidying microbial community data sets in Chipster further involve tools for visualizing and filtering out low-abundance OTUs. There are two approaches to this: a prevalence-based one and another based on the abundance of singletons and doubletons. Prevalence refers to the number of samples in which a taxon appears at least once. In Chipster it is possible to visualize taxon prevalences and apply a prevalence filter using a user-specified percent threshold. There are also options for tabulating singleton and doubleton abundances as a text summary, and for removing singletons and doubletons from the phyloseq object.
+
+### Slide 5
+
+The figure shown on this slide is a prevalence plot that can be used to visually estimate a suitable prevalence filtering threshold. The x axis shows total read numbers displayed logarithmically, with values of 1, 10, 100 and up to 10000. The y axis corresponds to prevalences shown as fractions in relation to total sample numbers. The y axis values range from 0 to 1 at increments of 0.25, with 1 corresponding to 100%. For example, if a given taxon has a value of 0.05 on the plot, it occurs in 5% of all samples included in the data set. 
+
+Within the plot, there are several panels split based on taxonomic classifications at the phylum level. In this case, proceeding from the top left toward the right and then downward, we have panels for Actinobacteria, OTUs that are unclassified at the phylum level, Bacteroidetes, Deinococcus-Thermus, Firmicutes, Patescibacteria, Proteobacteria, Tenericutes and Verrucomicrobia. Each dot on the plot corresponds to a separate OTU. There is also a dashed line toward the bottom of each panel. This corresponds to a prevalence filtering threshold of 5% that is included in the prevalence plots as a guess. In practice, when performing prevalence filtering, the user may also set other values as the threshold.
+
+## Video 3: Transformations and Ordinations
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

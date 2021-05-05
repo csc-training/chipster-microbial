@@ -120,6 +120,9 @@
    
 <!-- Don't indent these lines or it will mess pre blocks indentation --> 
 <div id="content">
+<div id="microbial-community-analysis-using-chipster-transcripts-for-day-2-videos" class="section level2">
+<h2>Microbial Community Analysis Using Chipster (Transcripts for Day 2 Videos)</h2>
+</div>
 <div id="video-1-tool-overview-and-data-importing" class="section level2">
 <h2>Video 1: Tool Overview and Data Importing</h2>
 <div id="introduction" class="section level3">
@@ -217,6 +220,106 @@
 </div>
 <div id="video-3-transformations-and-ordinations" class="section level2">
 <h2>Video 3: Transformations and Ordinations</h2>
+<div id="slide-1-2" class="section level3">
+<h3>Slide 1</h3>
+<p>Welcome to Part 3 of this video series on different Chipster tools for microbiome data tidying, visualization and statistical analysis. Here we will discuss a topic that is critical to making the most out of microbial community data sets: transformations and ordinations.</p>
+<p>While recording this video, Chipster offers four different options for transforming OTU abundance data sets. These are available as part of the Transform OTU counts tool. The screen cap I have on this slide shows different parameters available for the tool. At the top, there is a drop-down menu where we can choose the type of transformation we want to use. That choice is study-specific and the options include:</p>
+<ul>
+<li><p>Centered log-ratio (CLR) transformation with a pseudocount of one. A pseudocount is used due to microbial community data featuring many zeros.</p></li>
+<li><p>Relative abundance conversions, that is, converting OTU counts to proportions.</p></li>
+<li><p>Hellinger transformation, which is essentially the square root of relative abundance</p></li>
+<li><p>Conversion to the DESeq2 format. This option also produces a separate data set where a variance-stabilising transformation built into the DESeq2 R package has been applied to OTU counts.</p></li>
+</ul>
+<p>As an input file, the Transform OTU counts tool accepts any phyloseq object saved in the Rda format.</p>
+</div>
+<div id="slide-2-2" class="section level3">
+<h3>Slide 2</h3>
+<p>If you are using the DESeq2 format conversion option, there is an additional parameter that we need to fill in, called Phenodata variable used for DESeq2 conversion. This is because the DESeq2 conversion step specifies a formula upon which the conversion is based. For example, if we were interested in comparing different sample groups as specified under the Phenodata column called &quot;group&quot;, we would choose &quot;group&quot; as the variable here.</p>
+</div>
+<div id="slide-3-2" class="section level3">
+<h3>Slide 3</h3>
+<p>Once we have transformed our data, we often want to perform ordinations and statistical tests. While ordinations can be used to visualize differences in microbial community structure between samples, visualizing taxon relative abundances using bar plots can also be helpful as a qualitative method for inspecting potential differences between groups.</p>
+<p>Here, as an example, I have an OTU relative abundance bar plot produced by Chipster. The x axis is arranged by unique IDs for each community profile, that is, the sample column in the Phenodata file. The y axis corresponds to relative abundance, with values ranging from zero to one, at increments of 0.25. The value 1 corresponds to 100% relative abundance. The plot has been split into two panels using the &quot;group&quot; column in the phenodata file, resulting in panels called a and b.</p>
+<p>This is a stacked bar plot, with each bar showing relative abundances of different phyla. Three different phyla are shown in the plot, corresponding to different colours.</p>
+</div>
+<div id="slide-4-2" class="section level3">
+<h3>Slide 4</h3>
+<p>Ok, next let's move on to distance matrices and ordinations. At the time of recording this video, Chipster offers the possibility to use two different types of distance measures that are used to compute distance matrices: Euclidean distances and Bray-Curtis distances. If a Euclidean distances are determined for data that have been CLR-transformed, there is a separate term for this type of distance measure, and that's called the Aitchison distance. Essentially, a distance matrix in this context is a matrix of similarity comparisons between individual community profiles. This type of matrix is used as the input for many statistical tests that can be used to investigate between-sample differences in community structure.</p>
+<p>The Distance matrices and ordinations tool, which is used for distance matrix computation, is also used to produce multivariate ordinations. Two types of ordinations are available: non-metric multidimensional scaling ordinations, or nMDS in short, or distance-based redundancy analyses (db-RDA in short). Just as with other steps in this part of the analytical workflow, the choice of which ordination type to use is study-specific. To find out more about different ordination methods and other topics related to the analysis of microbial community data, I can whole-heartedly recommend a website called &quot;Guide to Statistical Analysis in Microbial Ecology&quot;, for which I have provided a link on the slide.</p>
+<p>The screenshot I have here shows some of the parameters available for the Distance matrices and ordinations tool. To use the tool, we have to specify the type of distance measure, the type of ordination, and we also need to list that phenodata column which contains unique IDs for each community profile.</p>
+</div>
+<div id="slide-5-2" class="section level3">
+<h3>Slide 5</h3>
+<p>On this slide, I have an example of a non-metric multidimensional scaling ordination. The figure shows individual data points, all of which correspond to different microbial communities, colour-coded using the &quot;group&quot; column in the phenodata file. The individual data points are labelled by their unique IDs.</p>
+<p>What ordinations like nMDS do is to attempt condensing multivariate data onto a 2D plot, since 2D images are easier for humans to interpret than 3D plots (not to mention situations involving more than three dimensions). The closer individual data points are to one another, the more similar they are in terms of community structure. In addition to visualizing differences between sample groups, these types of plots can also be useful for identifying outliers in the data. For example, at the top of the plot, there is an individual red point labelled F3D0, which appears somewhat separate from the other data points in group a.</p>
+</div>
+<div id="slide-6-1" class="section level3">
+<h3>Slide 6</h3>
+<p>If we wanted to use a distance-based redundancy analysis instead of nMDS, we also need to specify a particular phenodata variable. The screenshot on this slide shows more of the parameters available in the Distance matrices and ordinations tool. There are sections for specifying whether we want to show unique sample IDs in the resulting plot and which phenodata variable should be used to group the ordination points by either colour or shape. Beneath those, as the last item in the list, there is a section called &quot;Phenodata variable 1 for db-RDA formula specification&quot;. If your are planning to use db-RDA in Chipster, this section should be used to indicate a phenodata variable to use for producing the ordination. For example, this could be the variable &quot;group&quot; if we are interested in visualizing potential variation between groups a and b. Those sections are not shown in the screenshot, but it is also possible to specify further phenodata variables when using db-RDA.</p>
+</div>
+<div id="slide-7" class="section level3">
+<h3>Slide 7</h3>
+<p>The image here is an example of a distance-based redundancy analysis performed in Chipster. The way to interpret this figure is similar to interpreting an nMDS plot. Different ordination methods will produce different results and, indeed, one of the major decisions one needs to make while analysing microbial community data sets concerns the selection of the most appropriate methods for data visualization and analysis.</p>
+<p>That's it for this video. In the next one, we will have a look at statistical testing.</p>
+</div>
+</div>
+<div id="video-4-statistics" class="section level2">
+<h2>Video 4: Statistics</h2>
+<div id="slide-1-3" class="section level3">
+<h3>Slide 1</h3>
+<p>This video is the fourth and last part of a video series on different Chipster tools for microbiome data tidying, visualization and statistical analysis. Here, we will focus on different statistical tools that can be used for microbial community comparisons.</p>
+<p>The first two methods I will discuss are PERMANOVA and PERMDISP. Both are abbreviations, with PERMANOVA standing for &quot;permutational multivariate analysis of variance&quot; and PERMDISP meaning a test for the homogeneity of multivariate dispersions. As you can hear, there is a lot of terminology here and hopefully by the end of this video, concepts such as multivariate dispersion will feel more familiar.</p>
+<p>To start with, we can turn our attention toward what these two tests are generally used for and what kinds of questions they can help answer.</p>
+<p>PERMANOVA is available both as a global test and a pairwise test. A global test is used to test for overall differences between groups in a given data set and is our first point of entry. One example of a question this test could help answer is: Does community structure differ between sample groups?</p>
+<p>If we find out that such a difference does exist, it is possible to perform pairwise tests that help determine where exactly the difference can be found. A question pairwise PERMANOVA might help answer is: which particular groups differ from one another in terms of microbial community structure?</p>
+<p>It is important to note that PERMANOVA results can be influenced by what we call location effects, as well as dispersion effects. I'll go through the concepts of location and dispersion in more detail in the next slide. For now, though, I can mention that there is a separate test that is used together with PERMANOVA, called PERMDISP. PERMDISP stands for a test for the homogeneity of multivariate dispersions and it is only run if we get a significant PERMANOVA result. Running it can help us find out why exactly the PERMANOVA result is significant.</p>
+</div>
+<div id="slide-2-3" class="section level3">
+<h3>Slide 2</h3>
+<p>In the last slide, I spoke quite a lot about location and dispersion. So the question remains, what do these actually mean in practice? With the help of this slide, I hope to explain these concepts in more detail.</p>
+<p>As mentioned, PERMANOVA results can be influenced by both. More specifically, a PERMANOVA result can be significant due to a location effect, a dispersion effect, or a mix of both.</p>
+<p>The figure I have here is lifted from a very useful publication by David Warton and colleagues, published in 2011 in the journal Methods in Ecology and Evolution. The slide contains a link to that paper.</p>
+<p>The figure illustrates four different location versus dispersion scenarios that we might encounter when running PERMANOVA. There are four plots and each of these corresponds to a multivariate ordination. You might remember that, in Video 3, we discussed how to interpret ordination plots such as the ones shown here.</p>
+<p>In each plot, there are two samples indicated by either circle or plus symbol shapes. The x and y axes correspond to arbitrary ordination axes and are shown without units. Each data point corresponds to a given microbial community and the closer the points are to one another, the more similar they are in terms of community structure.</p>
+<p>The top left scenario corresponds to a situation where we have no location or dispersion effect. In this case, the data points are evenly distributed in the ordination space and there are no clear differences between the groups, either in terms of where they reside in the space or in terms of how much variation we see within a given group.</p>
+<p>On the top right, we have a situation involving a location effect. Data points corresponding to one group are visibly separated from points corresponding to the other group in the ordination space. This is what we refer to as a location effect. However, the two groups are very similar in terms of within-sample variation. In other words, there is no dispersion effect.</p>
+<p>On the bottom left, we have no location effect but we have a dispersion effect. Data points from the two groups overlap in the ordination space, but one of the groups, denoted by circle symbols, shows less within-sample variation than the other group, which is more widely distributed.</p>
+<p>Finally, on the bottom right, we have a scenario involving both a location and dispersion effect. The two groups are separated in terms of where they are located in the ordination space, and the group on the left, denoted by circles, shows much less within-sample variation than the other group.</p>
+<p>Running PERMANOVA on its own cannot distinguish between location and dispersion effects, which is why it is often accompanied by PERMDISP. Using those two tests together makes it possible to infer whether a significant PERMANOVA result is due to location or dispersion effects, or both.</p>
+</div>
+<div id="slide-3-3" class="section level3">
+<h3>Slide 3</h3>
+<p>On this slide, I have a screenshot of PERMANOVA results generated in Chipster. This is a text summary of statistical test output and there are a few sections that are particularly important for interpreting the outcome.</p>
+<p>At the top, under the word &quot;call&quot;, there is a row of text corresponding to the formula used to run PERMANOVA. What is probably of most interest, however, is the section under the line saying &quot;Terms added sequentially&quot;. Here we have some test results that could, for example, be used as part of a publication or report.</p>
+<p>The column Df corresponds to degrees of freedom and provide us with information about the sample size used to perform the analysis. When reporting the results of tests like this, it is customary to list the degrees of freedom for both the variable being tested and the residual degrees of freedom, which here are 1 and 17, respectively. The column called F.model corresponds to the test statistic, which in the case of PERMANOVA is called the pseudo-F value. That value tells us something about the magnitude about the effect we've observed. The column called Pr(&gt;F) corresponds to the statistical significance of the test, or the p value. Conventionally, p values of less than 0.05 are considered statistically significant. In this case, the number reported is 0.001, which in practice means that p is less than 0.001.</p>
+</div>
+<div id="slide-4-3" class="section level3">
+<h3>Slide 4</h3>
+<p>Let's say that we have completed a global test and it turns out statistically significant, as on the previous slide. To find out where exactly the difference or differences lie, it is possible to conduct post-hoc pairwise comparisons.</p>
+<p>If we have a significant PERMANOVA result, Chipster offers the option to run pairwise PERMANOVA tests. Conceptually these are similar to global PERMANOVA, but with comparisons performed between individual sample pairs.</p>
+<p>If there is a significant PERMDISP result, this can be followed by a Tukey's Honestly Significant Difference (or HSD) test.</p>
+<p>Since both approaches involve multiple testing, the test results are corrected for that (which means that sometimes the results can be somewhat conservative).</p>
+</div>
+<div id="slide-5-3" class="section level3">
+<h3>Slide 5</h3>
+<p>The previous methods were all based on distance matrices. Another option for statistical comparisons of microbial communities in Chipster includes using the DESeq2 R package.</p>
+<p>DESeq2 is a method that originates from the RNAseq field, but is increasingly being used my microbiologists. It is rather complex mathematically speaking and I won't cover the details in this video. Instead, we can focus on the types of questions it can help answer and the inferences we can make based on the output. Tests such as PERMANOVA compare microbial communities as a whole, while DESeq2 can help us get down to the level of individual taxa. It can enable us to answer questions like &quot;Which taxa are differentially abundant between samples?&quot;, which in turns might allow us to make useful inferences about the data, for example that a particular illness is associated with a decline in the abundance of certain beneficial microbial taxa in the human gut.</p>
+<p>While for distance matrix-based tests we'd often use data that have been transformed in some way or another, with DESeq2 the situation is different. Here, we would use untransformed data as the input, as the DESeq2 package features an internal correction for differences in sequencing library size.</p>
+<p>The results after running DESeq2 are given as logfold changes in taxon abundance. I have a useful link up on this slide if any of you would like to find out more detail on DESeq2.</p>
+</div>
+<div id="slide-6-2" class="section level3">
+<h3>Slide 6</h3>
+<p>In the remaining parts of this video, we can focus on how the DEseq2 tool for microbial community comparisons is currently configured in Chipster. Currently, in April 2021, the tool focuses on comparisons of two groups at a time. There may be situations in which the particular phenodata variable we are interested in contains more than two groups and in those situations, it is possible to specify a pair. These are named as Group 1 and Group 2.</p>
+<p>Running DESeq2 involves specifying a reference group against which the other group is compared. If comparing two groups, the reference group is selected alphabetically. For example, b would be compared against a, or a group called sick would be compared against a reference group called healthy.</p>
+<p>When using a phenodata column containing more than two groups, the reference always corresponds to Group 2.</p>
+</div>
+<div id="slide-7-1" class="section level3">
+<h3>Slide 7</h3>
+<p>After running the DESeq2 tool, Chipster will produce a large table with logfold changes reported as numbers. However, looking at that alone can be quite challenging if we want to make any quick inferences about the data. Because of that, a summary plot showing logfold changes is also produced, and on this slide I have an example of one.</p>
+<p>The x axis shows logfold changes. Logfold changes can be either negative or positive, so in this case the x axis ranges from -8 to 8. The value zero is indicated by a grey line on the plot, to make interpretation of the results easier. On the y axis is a list of different taxa, in this case at the Order level, with the taxonomic classification level being possible to specify by the user. Individual data points in the plot correspond to logfold changes and have been colour-coded according to the class level, with the taxonomic level used here also being possible to specify separately.</p>
+<p>This type of plot serves as a useful overview of taxon-level differences between sample groups and it is also possible to download the more detailed results table from Chipster, for further inspection.</p>
+<p>That concludes the fourth and final video in this series. Thanks for joining!</p>
+</div>
 </div>
 </div>
 
@@ -227,9 +330,11 @@
           <div id="toc">
        <button type="button" class="close">×</button>
        <ul>
+       <li><a href="#microbial-community-analysis-using-chipster-transcripts-for-day-2-videos">Microbial Community Analysis Using Chipster (Transcripts for Day 2 Videos)</a></li>
        <li><a href="#video-1-tool-overview-and-data-importing">Video 1: Tool Overview and Data Importing</a></li>
        <li><a href="#video-2-data-inspection-and-tidying">Video 2: Data Inspection and Tidying</a></li>
        <li><a href="#video-3-transformations-and-ordinations">Video 3: Transformations and Ordinations</a></li>
+       <li><a href="#video-4-statistics">Video 4: Statistics</a></li>
        </ul>
      </div>
         </div>

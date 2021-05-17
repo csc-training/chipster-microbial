@@ -51,10 +51,17 @@ Note that after this point in real life you can delete the individual fastq file
 Select the file `zippedFastq.tar` and the tool `Quality control / Read quality with MultiQC for many FASTQ files`, and click *Run*. Select the result file and click *Open in new tab*.
 
 ```
-How long are the reads (in the General Statistics section click Configure columns, select Length and unselect M sequences)? 
-Based on the plot Sequence Counts, do all the samples have the same number of reads? Are most of the reads unique?
-Based on the plot Sequence Quality Histograms, is the base quality good all along the reads? 
-Do the samples marked with red have something in common (click the traffic light bar above the plot)?
+How long are the reads (in the General Statistics section, click 
+Configure columns, select Length and unselect M sequences)?
+
+Based on the plot Sequence Counts, do all the samples have the 
+same number of reads? Are most of the reads unique?
+
+Based on the plot Sequence Quality Histograms, is the base quality
+good all along the reads? 
+
+Do the samples marked with red have something in common (click the
+traffic light bar above the plot)?
 ```
 
 **Step 4. Combine paired reads into sequence contigs**
@@ -63,12 +70,17 @@ Select `zippedFastq.tar` and run the tool `Microbial amplicon data preprocessing
 
 ```
 Select contigs.summary.tsv and view it as Spreadsheet. 
-How many sequences are there in the data? How long are most of the contigs? The longest contig? Are there ambiguous bases in the contigs?
 
-Select contig.numbers.txt and view it as Text. Are there roughly the same number of contigs in each sample?
+How many sequences are there in the data? How long are most of
+the contigs? The longest contig? Are there ambiguous bases in 
+the contigs?
 
-Check in the samples.fastqs.txt if the fastq files were assigned correctly to samples.
-Open the contigs.groups files as a spreadsheet. What information does it contain?
+Select contig.numbers.txt and view it as Text. Are there roughly
+the same number of contigs in each sample?
+
+Check in the samples.fastqs.txt if the fastq files were assigned
+correctly to samples. Open the contigs.groups files as a 
+spreadsheet. What information does it contain?
 ```
 
 **Step 5. Remove suspiciously long sequences and sequences containing ambiguous bases**
@@ -129,7 +141,8 @@ Choose `screened.fasta.gz` and `screened.count_table` and run the tool `Filter s
 Open filtered-log.txt. 
 How many columns we removed? How long is the alignment now? 
 
-Did the filtering generate new identical sequences, which were subsequently removed (compare summary.screened.tsv and filtered-unique-summary.tsv)?
+Did the filtering generate new identical sequences, which were subsequently removed 
+(compare summary.screened.tsv and filtered-unique-summary.tsv)?
 ```
 
 **Step 10. Precluster the aligned sequences**
@@ -146,7 +159,9 @@ How many unique sequences do we have now?
 Select `preclustered.fasta` and `preclustered.count_table`. and the tool `Remove chimeric sequences`. Set *dereplicate = true* and make sure that *Silva gold bacteria* is selected as the reference. Then repeat the run so that you change the reference to *none, de novo*.
 
 ```
-Compare the number of chimeras removed by these two methods: Check the two files called chimeras.removed.summary.tsv. 
+Compare the number of chimeras removed by these two methods: 
+Check the two files called chimeras.removed.summary.tsv. 
+
 Which method removed more chimeras?
 ```
 

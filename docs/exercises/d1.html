@@ -138,19 +138,31 @@
 <p>Note that after this point in real life you can delete the individual fastq files, because you can always open the tar package using the tool <code>Utilities / Extract .tar.gz file</code>.</p>
 <p><strong>Step 3. Check the quality of reads with FastQC</strong></p>
 <p>Select the file <code>zippedFastq.tar</code> and the tool <code>Quality control / Read quality with MultiQC for many FASTQ files</code>, and click <em>Run</em>. Select the result file and click <em>Open in new tab</em>.</p>
-<pre><code>How long are the reads (in the General Statistics section click Configure columns, select Length and unselect M sequences)? 
-Based on the plot Sequence Counts, do all the samples have the same number of reads? Are most of the reads unique?
-Based on the plot Sequence Quality Histograms, is the base quality good all along the reads? 
-Do the samples marked with red have something in common (click the traffic light bar above the plot)?</code></pre>
+<pre><code>How long are the reads (in the General Statistics section, click 
+Configure columns, select Length and unselect M sequences)?
+
+Based on the plot Sequence Counts, do all the samples have the 
+same number of reads? Are most of the reads unique?
+
+Based on the plot Sequence Quality Histograms, is the base quality
+good all along the reads? 
+
+Do the samples marked with red have something in common (click the
+traffic light bar above the plot)?</code></pre>
 <p><strong>Step 4. Combine paired reads into sequence contigs</strong></p>
 <p>Select <code>zippedFastq.tar</code> and run the tool <code>Microbial amplicon data preprocessing / Combine paired reads to contigs</code>.</p>
 <pre><code>Select contigs.summary.tsv and view it as Spreadsheet. 
-How many sequences are there in the data? How long are most of the contigs? The longest contig? Are there ambiguous bases in the contigs?
 
-Select contig.numbers.txt and view it as Text. Are there roughly the same number of contigs in each sample?
+How many sequences are there in the data? How long are most of
+the contigs? The longest contig? Are there ambiguous bases in 
+the contigs?
 
-Check in the samples.fastqs.txt if the fastq files were assigned correctly to samples.
-Open the contigs.groups files as a spreadsheet. What information does it contain?</code></pre>
+Select contig.numbers.txt and view it as Text. Are there roughly
+the same number of contigs in each sample?
+
+Check in the samples.fastqs.txt if the fastq files were assigned
+correctly to samples. Open the contigs.groups files as a 
+spreadsheet. What information does it contain?</code></pre>
 <p><strong>Step 5. Remove suspiciously long sequences and sequences containing ambiguous bases</strong></p>
 <p>Choose <code>contigs.fasta.gz</code> and <code>contigs.groups</code> (use ctrl / cmd key to select multiple files). Select the tool <code>Screen sequences for several criteria</code>, set <code>Maximum length of the sequences = 275</code> and <code>Maximum number of ambiguous bases = 0</code>, and run the tool.</p>
 <pre><code>Open summary.screened.tsv as spreadsheet. 
@@ -186,14 +198,17 @@ Were these sequences removed because:
 <pre><code>Open filtered-log.txt. 
 How many columns we removed? How long is the alignment now? 
 
-Did the filtering generate new identical sequences, which were subsequently removed (compare summary.screened.tsv and filtered-unique-summary.tsv)?</code></pre>
+Did the filtering generate new identical sequences, which were subsequently removed 
+(compare summary.screened.tsv and filtered-unique-summary.tsv)?</code></pre>
 <p><strong>Step 10. Precluster the aligned sequences</strong></p>
 <p>Select <code>filtered-unique.fasta.gz</code> and <code>filtered-unique.count_table</code>, and the tool <code>Precluster aligned sequences</code>. Set <em>Number of differences allowed = 2</em> and run the tool.</p>
 <pre><code>Open preclustered-summary.tsv.
 How many unique sequences do we have now?</code></pre>
 <p><strong>Step 11. Remove chimeras</strong></p>
 <p>Select <code>preclustered.fasta</code> and <code>preclustered.count_table</code>. and the tool <code>Remove chimeric sequences</code>. Set <em>dereplicate = true</em> and make sure that <em>Silva gold bacteria</em> is selected as the reference. Then repeat the run so that you change the reference to <em>none, de novo</em>.</p>
-<pre><code>Compare the number of chimeras removed by these two methods: Check the two files called chimeras.removed.summary.tsv. 
+<pre><code>Compare the number of chimeras removed by these two methods: 
+Check the two files called chimeras.removed.summary.tsv. 
+
 Which method removed more chimeras?</code></pre>
 <p><strong>Step 12. Classify sequences</strong></p>
 <p>We continue with the result files from the chimera removal which used Silva as the reference. Choose <code>chimeras.removed.fasta.gz</code> and <code>chimeras.removed.count_table</code>, and run the tool <code>Classify 16S or 18S sequences to taxonomic units using Silva.</code></p>

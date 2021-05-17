@@ -26,7 +26,7 @@ opts_knit$set(width=75)
 
 **Step 13. Creating `phyloseq` input files**
 
-Choose `picked.fasta`, `picked.count_table` and `sequences-taxonomy-assignment.txt`. 
+Choose `chimeras.removed.fasta.gz`, `chimeras.removed.count_table` and `sequences-taxonomy-assignment.txt`. 
 Next, tun the tool `Generate input files for phyloseq` so that you select the correct data type (`16S, 18S or archaeal`) and set a dissimilarity threshold of 0.03 (i.e. 3%) for OTU clustering.
 
 ```

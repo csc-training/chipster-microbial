@@ -1,0 +1,166 @@
+---
+  output:
+  rmdformats::html_clean:
+  highlight: kate
+---
+  
+  
+  ```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+# **Day 1: Data pre-processing**
+
+This hands-on example is based on [Mothur’s MiSeq SOP](http://www.mothur.org/wiki/MiSeq_SOP).
+
+The data consist of the following 19 mouse fecal samples collected after weaning from one animal: 
+
+-9 early samples, collected on days 0-9 post weaning
+-10 late samples, collected on days 141-150 post weaning
+
+Our aim in these exercises is to find out if the early samples differ from the late samples in terms of microbial community structure.
+All samples were sequenced using Illumina MiSeq. We have overlapping 251 bp paired end reads which come from the 253 bp long V4 region of the 16S rRNA gene. 
+
+**Step 1. Start Chipster and open a session**
+
+Go to [the Chipster website](https://chipster.rahtiapp.fi/) and log in. In the session list, scroll down to *Training sessions* and select *course_16S_rRNA_community_analysis_MiSeq*. This session has 38 zipped fastq files. Save your own copy of the session: click the three dots in the *Session info* section and select *Save a copy*.
+
+**Step 2. Package all the fastq files in a tar package**
+
+Select all the fastq files: 
+
+- Go to the *List* tab, click on the first file, keep the shift key down and click on the last file. 
+- Select the tool `Utilities / Make a Tar package`. 
+- Click *Parameters*, set `File name for tar package = zippedFastq`, and click *Run*. 
+
+Note that after this point in real life you can delete the individual fastq files, because you can always open the tar package using the tool `Utilities / Extract .tar.gz file`.
+
+**Step 3. Check the quality of reads with FastQC**
+
+Select the file `zippedFastq.tar` and the tool `Quality control / Read quality with MultiQC for many FASTQ files`, and click *Run*. Select the result file and click *Open in new tab*.
+
+```
+How long are the reads (in the General Statistics section click Configure columns, select Length and unselect M sequences)? 
+Based on the plot Sequence Counts, do all the samples have the same number of reads? Are most of the reads unique?
+Based on the plot Sequence Quality Histograms, is the base quality good all along the reads? 
+Do the samples marked with red have something in common (click the traffic light bar above the plot)?
+```
+
+**Step 4. Combine paired reads into sequence contigs**
+
+Select `zippedFastq.tar` and run the tool `Microbial amplicon data preprocessing / Combine paired reads to contigs`.
+
+```
+Select contigs.summary.tsv and view it as Spreadsheet. 
+How many sequences are there in the data? How long are most of the contigs? The longest contig? Are there ambiguous bases in the contigs?
+
+Select contig.numbers.txt and view it as Text. Are there roughly the same number of contigs in each sample?
+
+Check in the samples.fastqs.txt if the fastq files were assigned correctly to samples.
+Open the contigs.groups files as a spreadsheet. What information does it contain?
+```
+
+**Step 5. Remove suspiciously long sequences and sequences containing ambiguous bases**
+
+Choose `contigs.fasta.gz` and `contigs.groups` (use ctrl / cmd key to select multiple files). Select the tool `Screen sequences for several criteria`, set `Maximum length of the sequences = 275` and `Maximum number of ambiguous bases = 0`, and run the tool.
+
+```
+Open summary.screened.tsv as spreadsheet. 
+Did we manage to remove all the overly long contigs and ambiguous bases? 
+How many sequences are left?
+```
+
+**Step 6. Remove identical sequences**
+
+Select `screened.fasta.gz` and `screened.groups`, and run the tool `Extract unique sequences`.
+
+```
+Open unique.summary.tsv.
+How many unique sequences do we have in the data?
+
+Open unique.count_table as spreadsheet.
+What do the rows and columns represent? 
+```
+
+*Step 7. Align sequences to reference**
+
+Select the files `unique.fasta.gz` and `unique.count_table`, and run the tool `Align sequences to reference` so that you use only the following section of the reference template alignment: *Start = 13 862* and *End = 23 444*.
+
+```
+Open aligned-summary.tsv. 
+Where in the reference alignment do most of the contigs align? 
+Are there deviants?
+
+Open also custom.reference.summary.tsv. 
+How long is the longest homopolymer in the reference? 
+How many sequences does the reference contain?
+```
+
+**Step 8. Remove sequences which align outside the common alignment range or contain too long homopolymers**
+
+Select `aligned.fasta.gz` and `unique.count_table`, and the tool `Screen sequences for several criteria`. Set *Start position = 8*, *End position = 9582*, and *Maximum homopolymer length = 16*. Run the tool.
+
+```
+Open summary.screened.tsv as spreadsheet. 
+How many unique sequences were removed? 
+How many sequences were removed overall?
+
+Were these sequences removed because: 
+1) they aligned outside the common alignment range, or 
+2) they contained too long homopolymers?
+```
+
+**Step 9. Remove gaps and overhangs from the alignment. If this creates new identical sequences, remove them**
+
+Choose `screened.fasta.gz` and `screened.count_table` and run the tool `Filter sequence alignment`.
+
+```
+Open filtered-log.txt. 
+How many columns we removed? How long is the alignment now? 
+
+Did the filtering generate new identical sequences, which were subsequently removed (compare summary.screened.tsv and filtered-unique-summary.tsv)?
+```
+
+**Step 10. Precluster the aligned sequences**
+
+Select `filtered-unique.fasta.gz` and `filtered-unique.count_table`, and the tool `Precluster aligned sequences`. Set *Number of differences allowed = 2* and run the tool.
+
+```
+Open preclustered-summary.tsv.
+How many unique sequences do we have now?
+```
+
+**Step 11. Remove chimeras**
+
+Select `preclustered.fasta` and `preclustered.count_table`. and the tool `Remove chimeric sequences`. Set *dereplicate = true* and make sure that *Silva gold bacteria* is selected as the reference. Then repeat the run so that you change the reference to *none, de novo*.
+
+```
+Compare the number of chimeras removed by these two methods: Check the two files called chimeras.removed.summary.tsv. 
+Which method removed more chimeras?
+```
+
+**Step 12. Classify sequences**
+
+We continue with the result files from the chimera removal which used Silva as the reference. Choose `chimeras.removed.fasta.gz` and `chimeras.removed.count_table`, and run the tool `Classify 16S or 18S sequences to taxonomic units using Silva.`
+
+```
+Open classification-summary.tsv. 
+Sort the table by the taxon column (click on the word taxon). 
+Does your data contain chloroplast sequences? 
+```
+
+**Step 13. Share your analysis session with a colleague**
+
+Select your session, click on the three dots, and select *Share*. 
+Create a new access rule: enter haka/ekorpela@csc.fi in the UserID field and set Rights = read-only.

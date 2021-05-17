@@ -178,7 +178,7 @@ How many unique sequences do we have in the data?
 
 Open unique.count_table as spreadsheet.
 What do the rows and columns represent? </code></pre>
-<p>*Step 7. Align sequences to reference**</p>
+<p><strong>Step 7. Align sequences to reference</strong></p>
 <p>Select the files <code>unique.fasta.gz</code> and <code>unique.count_table</code>, and run the tool <code>Align sequences to reference</code> so that you use only the following section of the reference template alignment: <em>Start = 13 862</em> and <em>End = 23 444</em>.</p>
 <pre><code>Open aligned-summary.tsv. 
 Where in the reference alignment do most of the contigs align? 
@@ -187,7 +187,7 @@ Are there deviants?
 Open also custom.reference.summary.tsv. 
 How long is the longest homopolymer in the reference? 
 How many sequences does the reference contain?</code></pre>
-<p><strong>Step 8. Remove sequences which align outside the common alignment range or contain too long homopolymers</strong></p>
+<p><strong>Step 8. Remove sequences which align outside the common alignment range or contain homopolymers of excessive length</strong></p>
 <p>Select <code>aligned.fasta.gz</code> and <code>unique.count_table</code>, and the tool <code>Screen sequences for several criteria</code>. Set <em>Start position = 8</em>, <em>End position = 9582</em>, and <em>Maximum homopolymer length = 16</em>. Run the tool.</p>
 <pre><code>Open summary.screened.tsv as spreadsheet. 
 How many unique sequences were removed? 

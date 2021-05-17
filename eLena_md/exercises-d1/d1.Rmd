@@ -105,7 +105,7 @@ Open unique.count_table as spreadsheet.
 What do the rows and columns represent? 
 ```
 
-*Step 7. Align sequences to reference**
+**Step 7. Align sequences to reference**
 
 Select the files `unique.fasta.gz` and `unique.count_table`, and run the tool `Align sequences to reference` so that you use only the following section of the reference template alignment: *Start = 13 862* and *End = 23 444*.
 
@@ -119,7 +119,7 @@ How long is the longest homopolymer in the reference?
 How many sequences does the reference contain?
 ```
 
-**Step 8. Remove sequences which align outside the common alignment range or contain too long homopolymers**
+**Step 8. Remove sequences which align outside the common alignment range or contain homopolymers of excessive length**
 
 Select `aligned.fasta.gz` and `unique.count_table`, and the tool `Screen sequences for several criteria`. Set *Start position = 8*, *End position = 9582*, and *Maximum homopolymer length = 16*. Run the tool.
 

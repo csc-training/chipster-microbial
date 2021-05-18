@@ -40,9 +40,9 @@ The `Generate input files for phyloseq` tool produces a phenodata file (a file t
 
 i) Select `phenodata-file.opti_mcc.shared`. 
 
-Fill the `chiptype` column so that samples `F3D0-F3D147` (moving downward from the top row) are marked as `a`, and that samples from `F3D148` onward are marked as `b`. You should end up with 9 samples with the chiptype marked as `a` and 10 samples with `b`.
+Fill the `chiptype` column so that samples `F3D0-F3D147` (moving downward from the top row) are marked as `NGS`, and that samples from `F3D148` onward are marked as `r`. You should end up with 9 samples with the chiptype marked as `NGS` and 10 samples with `r`. Note, these are entirely arbitrary groupings (we could also use other labels).
 
-ii) Next, fill in the `group` column: mark all the early samples (`D0-D9`) with `a`, and the late samples (`D141-D150`) with `b`.
+ii) Next, fill in the `group` column: mark all the early samples (`D0-D9`) with `a`, and the late samples (`D141-D150`) with `b`. These are also arbitrary labels.
 
 The end result should look like this:
 

@@ -24,7 +24,7 @@ opts_knit$set(width=75)
 
 ### **Getting the data into `phyloseq`**
 
-**Step 13. Creating `phyloseq` input files**
+**Step 14. Creating `phyloseq` input files**
 
 Choose `chimeras.removed.fasta.gz`, `chimeras.removed.count_table` and `sequences-taxonomy-assignment.txt`. 
 Next, tun the tool `Generate input files for phyloseq` so that you select the correct data type (`16S, 18S or archaeal`) and set a dissimilarity threshold of 0.03 (i.e. 3%) for OTU clustering.
@@ -34,7 +34,7 @@ Why are we using a dissimilarity threshold of 3%?
 Can you think of examples where another threshold might be more appropriate?
 ```
 
-**Step 14. Filling in the phenodata file**
+**Step 15. Filling in the phenodata file**
 
 The `Generate input files for phyloseq` tool produces a phenodata file (a file type in Chipster used for documenting sample groupings). Before proceeding with downstream analyses, let's take a moment to work on the phenodata. We'll imagine there are two columns with sample groupings that we're interested in: `chiptype` and `group`.
 
@@ -48,7 +48,7 @@ The end result should look like this:
 
 ![](Images/pheno_layout.png?raw=true)
 
-**Step 15. Producing a `phyloseq` object**
+**Step 16. Producing a `phyloseq` object**
 
 Finally! It's the moment we've been waiting for. `r emo::ji("smile")`
 
@@ -67,7 +67,7 @@ What elements does the phyloseq object consist of?
 ### **Inspecting and tidying the data**
 
 
-**Step 16. Sequence numbers, rarefaction curve and alpha diversity indices**
+**Step 17. Sequence numbers, rarefaction curve and alpha diversity indices**
 
 For this step, select the Rda file produced in **Step 15**. Try running the `Sequence numbers, rarefaction curve and alpha diversity estimates` tool. There are a couple of parameters to fill in - have a look at these in advance. Choose a phenodata variable to tabulate with the alpha diversity values and make sure you are telling the tool that we are working with raw data.
 
@@ -81,7 +81,7 @@ best - proceeding as is or rarefying the data to even depth?
 
 Feel free to try the `Rarefy OTU data to even depth` tool using the same Rda file and re-running the `Sequence numbers...` tool using the resulting dataset (ps_rarefied.Rda). If doing this, remember that you need to specify in the `Sequence numbers...` tool that the data are rarefied to even depth.
 
-**Step 17. Overview of taxon composition**
+**Step 18. Overview of taxon composition**
 
 Let's move on using the non-rarefied data set. Selecting `ps.Rda`, run the `Overview of taxon composition` tool, selecting Class as the level of biological organisation.
 
@@ -92,7 +92,7 @@ Do you see any particular classes in the data set that you
 think could be removed - if yes, why would you exclude them?
 ```
 
-**Step 18. Data tidying**
+**Step 19. Data tidying**
 
 There are quite a few data tidying tools. Let's go through them one by one!
 
@@ -100,7 +100,7 @@ Don't worry if you get lost at first, we're here to help. `r emo::ji("+1")`
 
 i) Again selecting `ps.Rda`, tidy the data set using the `Filter by taxonomic group` tool, choosing `Bacteria` as the group to retain. This helps ensure that we only keep those data that are classified as Bacteria at the domain level. 
 
-ii) Using the resulting Rda file (`ps_bacteria.Rda`), also run the `Remove selected taxa` tool. You could use this tool to filter out any taxa that you shortlisted for removal in **Step 17**. Even if not, this tool can be used to remove any chloroplast or mitochondrial sequences in the data.
+ii) Using the resulting Rda file (`ps_bacteria.Rda`), also run the `Remove selected taxa` tool. You could use this tool to filter out any taxa that you shortlisted for removal in **Step 18**. Even if not, this tool can be used to remove any chloroplast or mitochondrial sequences in the data.
 
 ```
 Why might you expect to see chloroplast or mitochondrial 
@@ -130,7 +130,7 @@ Can you think of situations where these should be kept as part of the dataset
 
 ### **Taking a closer look at patterns**
 
-**Step 19. Stacked taxon composition bar plots**
+**Step 20. Stacked taxon composition bar plots**
 
 At this point, we have many alternatives that depend on the study goals. Let's say that, in our case, the goal is to compare the overall community structure between different groups (with individual OTUs being of limited interest at this stage).
 
@@ -154,7 +154,7 @@ Great! But let's take a moment to think:
 Based on the plot, what would you anticipate - are the groups likely to differ?
 Can you think of another way to visualise the data?
 ```
-**Step 20. Other ways to visualize the data**
+**Step 21. Other ways to visualize the data**
 
 Going back to `ps_pruned.Rda`, let's also visualise the data using a multivariate ordination. For this, first perform a CLR transformation using the `Transform OTU counts tool`.
 
@@ -182,7 +182,7 @@ When might you want to use db-RDA rather than nMDS?
 
 ### **Diving into statistics**
 
-**Step 21. PERMANOVA**
+**Step 22. PERMANOVA**
 
 Ok! We're ready to run some statistical tests now.
 Let's proceed with a permutational multivariate analysis of variance (PERMANOVA).
@@ -209,7 +209,7 @@ Does the result match your earlier anticipations based on inspecting the ordinat
 
 There are also post-hoc pairwise tests for further community comparisons. We do not need those for the present dataset, since we are only comparing two groups at a time.
 
-**Step 22. DESeq2**
+**Step 23. DESeq2**
 
 If we were interested in OTU-level differences between sample groups, we could turn to DESeq2 instead of PERMANOVA. For this, let's return to the untransformed dataset (`ps_pruned.Rda`).
 

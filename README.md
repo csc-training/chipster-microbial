@@ -1,4 +1,4 @@
-# Microbial Community Analysis with Chipster (Remote Course)
+# Microbial Community Analysis with Chipster
 
 [Chipster website](https://chipster.csc.fi/)
 

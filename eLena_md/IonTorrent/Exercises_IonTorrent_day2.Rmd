@@ -1,0 +1,222 @@
+---
+output:
+  rmdformats::html_clean:
+    highlight: kate
+---
+
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+# **Day 2: Microbial community analysis**
+
+### **Getting the data into `phyloseq`**
+
+**Step 16. Creating `phyloseq` input files**
+
+Choose `chimeras.removed.fasta.gz`, `chimeras.removed.count_table` and `sequences-taxonomy-assignment.txt`. 
+Next, run the tool `Microbial amplicon dta preprocessing for OTU / Generate input files for phyloseq` so that you select the correct data type (`16S or 18S`) and set a cut-off of 0.03 (i.e. 3%, corresponding to 97% sequence similarity) for OTU clustering.
+
+```
+Why are we using a dissimilarity threshold of 3%? 
+Can you think of examples where another threshold might be more appropriate?
+```
+
+**Step 17. Filling in the phenodata file**
+
+The `Generate input files for phyloseq` tool produces a phenodata file (a file type in Chipster used for documenting sample groupings). Before proceeding with downstream analyses, let's take a moment to work on the phenodata. 
+
+i) Select the file `file.opti_mcc.shared` and in the *Selected files* choose the tab *Phenodata*.
+
+ii) Remove the columns `chiptype`, `group` and `description` by clicking the `x`. Create new columns called `site` and  `bagging` by clicking `+ Add column`. 
+
+iii) Check how the sample names in the column `sample` start, and based on this enter the site codes `HP` and `KEK` in the column `site`. Next, check the characters after `HP`and `KEK` in the sample names. When the next character is c, fill in `control` in the column `bagging`. When the next characters are `ps`, fill in `bagged` in the column `bagging`.
+
+Check that your filled in phenodata table matches the example below.
+
+![](Images/phenodata_IonTorrent.png?raw=true)  
+
+
+**Step 18. Producing a `phyloseq` object**
+
+Finally! `r emo::ji("smile")` We are done with pre-processing and ready to convert our files into a `phyloseq` object that will be used in the community analysis steps.
+
+Select the Mothur shared file `file.opti_mcc.shared` and constaxonomy file `file.opti_mcc.0.03.cons.taxonomy`. Select the tool `Convert Mothur files into phyloseq object`. In *Parameters*, specify the phenodata column including unique IDs for each community profile (the column `sample`). Run the tool.
+
+This tool produces two files: 
+
+- a `phyloseq` object (stored as `ps.Rda`)
+- a text summary of the imported object (`ps_imported.txt`).
+
+```
+Inspect the text summary a little closer. 
+What elements does the phyloseq object consist of?
+```
+
+### **Tidying and inspecting the data**
+
+**Step 19. Data tidying**
+
+i) First, let's remove any sequences that are not from our target group Bacteria. Select `ps.Rda` and in the menu `Microbial amplicon data analyses` the tool `Filter by taxonomic group` tool. Choose `Bacteria` as the group to retain. This helps ensure that we only keep those data that are classified as Bacteria at the domain level. 
+
+ii) Earlier we already saw that our data contains chloroplast sequences from plants, so let's remove them together with any mitochondrial sequences. Select the file `ps_bacteria.Rda` and the tool `Remove selected taxa`. Set `Remove class Chloroplast = yes` and `Remove family Mitochondria = yes` and run the tool. You could also use this tool to filter out other specific taxa such as known contaminants. 
+
+```
+Why might you expect to see chloroplast or mitochondrial 
+sequences in a bacterial dataset - isn't that a little strange?
+```
+
+There are a few more additional tools for data tidying. Let's first get an overview of the distribution of OTUs in our data. 
+
+iii) Selecting `ps_ind.Rda`, run the `Additional prevalence summaries` tool. This will produce both a prevalence plot (`ps_prevalence.pdf`) and a text summary (`ps_low.txt`). The plot has a prevalence threshold of 5% drawn as a default guess for prevalence filtering.
+
+```
+How many doubletons are there in the data set?
+Do you have an advance idea about what the term "prevalence" refers to?
+Which bacterial groups are most common and abundant in the data?
+```
+
+iv) There are two further tools for data tidying: 
+
+- Remove OTUs with 0-2 occurrences
+- Proportional prevalence filtering (for removing OTUs that occur in less than specific % of samples)
+
+Selecting `ps_ind.Rda`, run the former tool, making sure that both singletons and doubletons are removed.
+
+```
+Why would we want to remove singletons and doubletons from the data?
+Can you think of situations where these should be kept as part of the dataset?
+```
+
+**Step 20. Sequence numbers, rarefaction curve and alpha diversity indices**
+
+Select the file `ps_ind.Rda`. Try running the `Sequence numbers, rarefaction curve and alpha diversity estimates` tool. Choose a phenodata variable (`site` or `bagging`) to tabulate the alpha diversity values.
+
+```
+Can you already make some basic inferences about the data 
+based on the rarefaction curve and alpha diversity values?
+
+Based on the rarefaction curve, what do you think might be 
+best - proceeding as is or rarefying the data to even depth?
+```
+
+Try the `Rarefy OTU data to even depth` tool using the same file `ps_ind.Rda`. Select the resulting dataset `ps_rarefied.Rda`and and re-run the `Sequence numbers...` tool.
+
+```
+Would you compare alpha diversity based on non-rarefied or rarefied data?
+```
+
+### **Taking a closer look at patterns**
+
+**Step 21. Stacked taxon composition bar plots**
+
+At this point, we have many alternatives that depend on the study goals. Let's say that, in our case, the goal is to compare the overall community structure between different sites and treatments (with individual OTUs being of limited interest at this stage).
+
+Nevertheless, first we probably want to visualise the data and compare the sites and treatments in more detail.
+After all, we don't want to blindly rely on statistical test output!
+
+Select `ps_pruned.Rda` and run the `Transform OTU counts` tool, selecting `Relative abundances (%)` as the data treatment. We can use relative abundance data to produce bar plots.
+
+This will produce a file called `ps_relabund.Rda`. Select it and run the `OTU relative abundance bar plots` tool, making sure that you have the `Sample` column selected in `Phenodata variable with sequencing sample IDs`. There are quite a few other parameters here that you can also modify. Feel free to play around with the options but start with these:
+
+- 1 in Relative abundance cut-off threshold (%) for excluding OTUs
+- Class as the level of biological organisation
+- site as the phenodata variable 1 for plot faceting
+
+The result should look close to this (click on the thumbnail to expand the image):
+
+![](Images/taxbar_IonTorrent.png?raw=true)
+
+Great! But let's take a moment to think:
+
+```
+Based on the plot, what would you anticipate - are the sites likely to differ?
+Can you think of another way to visualise the data?
+```
+**Step 22. Other ways to visualize the data**
+
+Going back to `ps_pruned.Rda`, let's also visualise the data using a multivariate ordination. For this, first use the tool `Transform OTU counts tool` to perform a CLR transformation (`Centered log-ratio transformation with pseudocount`).
+
+```
+Why might we want to use CLR transformation here, instead of % relative abundances?
+```
+Selecting the resulting file `ps_clr.Rda`, run the `Distance matrices and ordinations` tool. Once again, one must specify a column in the phenodata with unique IDs for each sample (i.e. the `Sample` column). There are options for Euclidean and Bray-Curtis distances - choose Euclidean and for the ordination type, select nMDS. Also colour the ordination points by choosing `site` in `Phenodata variable for grouping ordination points by colour` and define the shape by choosing `bagging` in `Phenodata variable for grouping ordination points by shape`.
+
+Here, we are using Aitchinson distances because we carried out a CLR transformation and chose Euclidean distances. An alternative approach would be to continue from the rarefied dataset (`ps_rarefied.Rda`) and use Bray-Curtis dissimilarities to produce the nMDS. In addition to nMDS, there is another ordination type (db-RDA), but let's focus on the nMDS for now.
+
+```
+Looking at the ordination (ps_ordiplot.pdf), what features stand out? 
+Does it look like any difference between groups could be due to a "location effect", 
+"dispersion effect" or both?
+
+What is the stress value of the nMDS (in ps_ordi.txt)? 
+Can you guess why this might be important?
+
+What is the advantage of plotting individual sample names here?
+```
+As a bonus topic, you might also want to produce a db-RDA plot and consider this question:
+```
+When might you want to use db-RDA rather than nMDS?
+```
+
+### **Diving into statistics**
+
+**Step 23. PERMANOVA**
+
+Ok! We're ready to run some statistical tests now.
+Let's proceed with a permutational multivariate analysis of variance (PERMANOVA).
+
+The `Distance matrices and ordinations` tool also produced a distance matrix (`ps_dist.Rda`) that we can use for statistical testing. Selecting it, run the `Global PERMANOVA for OTU abundance data` tool, selecting `Main effects only` as the PERMANOVA formula and specifying `site` as `Phenodata variable 1`.
+
+```
+What does the word "global" mean here?
+
+How would you interpret the results (global_permanova.txt)? 
+Does the site explain community variation in our data?
+```
+
+Using `ps_dist.Rda`, also run the `PERMDISP for OTU abundance data` tool, selecting the same phenodata variable. 
+
+```
+What does PERMDISP stand for? Why would we want to use it?
+
+Comparing the output of this test (permdisl.txt) with the global PERMANOVA results,  
+can you confirm whether the PERMANOVA result is due to a location or dispersion effect? 
+
+Does the result match your earlier anticipations based on inspecting the ordination?
+```
+
+There are also post-hoc pairwise tests for further community comparisons. We do not need those for the present dataset, since we are only comparing two groups at a time.
+
+**Step 24. DESeq2**
+
+If we were interested in OTU-level differences between sample groups, we could turn to differential abundance analysis with DESeq2 instead of PERMANOVA. For this, let's return to the untransformed dataset (`ps_pruned.Rda`).
+
+Choosing that dataset and the `Transform OTU counts` tool, select `DEseq2 format conversion and variance-stabilizing transformation` as the data transformation. For the DESeq2 format conversion, we also need to specify a phenodata variable - for this, use `site`. We get two files as a result:
+
+- `ps_vst.Rda`
+- `deseq2.Rda`
+
+Of these, `deseq2.Rda` can be used for DESeq2.
+
+Selecting `deseq2.Rda`, run the `Differential OTU abundance analysis using DESeq2` tool, with the number of sample groups set to 2, the lower-level taxonomic grouping to Class and the higher-level grouping to Phylum.
+
+Take a moment to inspect the results table (`deseq2_otutable.tsv`) and results plot (`deseq2_otuplot.pdf`).
+
+```
+Do some taxa seem more responsible for community-level differences than others?
+Which site is the reference level in the comparison, HP or KEK?
+Are  OTUs with positive log2 fold change values more abundant in HP or in KEK?
+```

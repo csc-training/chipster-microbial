@@ -40,7 +40,7 @@ The `Generate input files for phyloseq` tool produces a phenodata file (a file t
 
 i) Select the file `file.opti_mcc.shared` and in the *Selected files* choose the tab *Phenodata*.
 
-ii) Remove the columns `chiptype`, `group` and `description` by clicking the `x`. Create new columns called `site` and  `bagging` by clicking `+ Add column`. 
+ii) Create new columns called `site` and `bagging` by clicking `+ Add column`. 
 
 iii) Check how the sample names in the column `sample` start, and based on this enter the site codes `HP` and `KEK` in the column `site`. Next, check the characters after `HP`and `KEK` in the sample names. When the next character is c, fill in `control` in the column `bagging`. When the next characters are `ps`, fill in `bagged` in the column `bagging`.
 

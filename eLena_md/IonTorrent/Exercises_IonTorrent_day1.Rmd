@@ -1,0 +1,219 @@
+---
+output:
+  rmdformats::html_clean:
+    highlight: kate
+---
+
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+# **Day 1: Data pre-processing**
+
+This is an example workflow for analysing amplicon sequence data of single-end reads from Ion Torrent sequencing.
+
+The data consist of 16 samples of willow [catkins](https://en.wikipedia.org/wiki/Catkin) to study plant-associated bacteria. The samples are a subset from a larger study that aimed to investigate the effect of pollinator visits on willow catkin microbes (https://doi.org/10.1007/s00442-022-05285-7).
+
+The samples here were collected from
+
+- two sites
+  - HP: no honeybee hives closeby
+  - KEK: honeybee hives present at the site
+- two treatments (4 replicates each)
+  - ps: willow catkins protected from pollinators by a mesh bag 
+  - c: control catkins that pollinators visited
+
+Our aim is to find out if site and/or protection from pollinators influenced the bacterial community in the willow catkins. 
+All samples were sequenced using Ion Torrent. The amplified region is the V6-V8 region of the bacterial 16S rRNA gene and the length of the amplicon is ca. 350 bp. The samples have been demultiplexed and barcodes removed, and each FASTQ file corresponds to one sample.
+
+**Step 1. Start Chipster and open a session**
+
+Go to [the Chipster website](https://chipster.rahtiapp.fi/) and log in. In the session list, scroll down to *Training sessions* and select *course_16S_rRNA_community_analysis_IonTorrent*. This session has 16 zipped fastq files. Save your own copy of the session: click the three dots in the *Session info* section on the lower right and select *Save a copy*.
+
+**Step 2. Package all the fastq files in a tar package**
+
+Select all the FASTQ files: 
+
+- Go to the *List* tab, click on the first file, keep the shift key down and click on the last file. 
+- Select the tool `Utilities / Make a tar package`. 
+- Click *Parameters*, set `File name for tar package = zippedFastq`, and close the parameter window. Click *Run* and select *Run Tool 1 job*.
+
+Note that after this point in real life you can delete the individual FASTQ files, because you can always open the tar package using the tool `Utilities / Extract .tar.gz file`.
+
+**Step 3. Check the quality of reads with FastQC**
+
+Select the file `zippedFastq.tar` and the tool `Quality control / Read quality with MultiQC for many FASTQ files`, and click *Run*. Select the result file and click *Open in new tab*.
+
+```
+How long are the reads (in the General Statistics section, click 
+Configure columns, select Length and unselect M sequences)?
+
+Based on the plot Sequence Counts, do all the samples have the 
+same number of reads? Are most of the reads unique?
+
+Based on the plot Sequence Quality Histograms, is the base quality
+good all along the reads? 
+
+```
+
+**Step 4. Remove primers with Cutadapt**
+
+Select `zippedFastq.tar` and select the tool `Microbial amplicon data preprocessing for ASV / Remove primers and adapters with Cutadapt`.
+
+Click *Parameters* and set `Is the data paired end or single end reads = single`.   
+Give the primer sequences:
+
+- Forward primer (in this case an M13 linker and the forward primer):  
+`The 5' adapter =  TGTAAAACGACGGCCAGTGTCAGCTCGTGYYGTGAG`  
+- Reverse primer: `The 3' adapter = TTGYACACACCGCCCGT` (reverse complement of the reverse primer)    
+
+Also set `Remove reads which were not trimmed = yes`.
+
+Close the parameter window and run the tool
+
+```
+Check the Cutadapt output (report.txt).   
+
+Look at the first sample and check how many times the forward primer (Adapter 1)  
+and reverse primer (Adapter 2) were trimmed.  
+
+Does Cutadapt with these settings detect exact matches of the primers?
+```
+
+**Step 5. Trim sequences for base quality and sequence length with Trimmomatic**
+
+Choose `adapters_removed.tar` and select the tool `Preprocessing / Trim Ion Torrent reads reads with Trimmomatic`. Set `Sliding window trimming parameters = 10:20`. Here we are telling Trimmomatic to slide along each sequence read in stretches of 10 bases, and if the average quality score of the window is below 20, trim the read at that point. Also set `Minimum length of reads to keep = 200` and run the tool.
+
+Choose `trimmed.tar`and run the MultiQC tool again (`Quality control / Read quality with MultiQC for many FASTQ files`)
+
+```
+Do you see any differences in the sequence counts and sequence quality histograms   
+compared to the first time we ran the tool before primer removal and quality trimming?
+```
+
+**Step 6. Combine FASTQ files and create count file**
+
+Select `trimmed.tar` run the tool `Microbial amplicon data preprocessing for OTU / Combine FASTQ files into one FASTA file and make a Mothur count file`.
+
+Check the summary file `sequences-summary.tsv`.
+
+```
+How long are most of the sequences? 
+How long is the longest sequence?
+Are there any ambiguous bases in the sequences?
+How many sequences are there in total?
+```
+
+**(Step 7. Screen sequences for ambiguous bases and suspiciously long sequences)**
+
+Generally at this point, we would screen the sequences for example as follows:
+Select `sequences.fasta.gz` and `sequences.count_table` (use ctrl / cmd key to select multiple files). Select the tool `Screen sequences for several criteria` and in parameters set `Maximum number of ambiguous bases = 0` and `Maximum length = 400`. However, we see from the output of the previous step that these steps are not necessary for this data set (there are no ambiguous bases and the longest sequence is only 333 bp), so let's skip this step and continue to step 8.
+
+**Step 8. Remove identical sequences**
+
+Select the files `sequences.fasta.gz`and `sequences.count_table` (use ctrl / cmd key to select multiple files) and run the tool `Extract unique sequences`.
+
+Note: If we had run step 7, we would have selected files `screened.fasta.gz` and `screened.count_table` here.
+
+Check the summary file `unique.summary.tsv`.
+
+```
+How many unique sequences vs. total sequence are there?
+Why are we removing the identical sequences?
+```
+
+**Step 9. Align sequences to reference**
+
+Next, we will align our sequences against the Silva v. 138.1 reference alignment. Select the files `unique.fasta.gz` and `unique.count_table`, and run the tool `Align sequences to reference` so that you use only the following section of the reference template alignment: `Start = 28500` and `End = 43100`. 
+
+(Note that these start and end values are selected for this specific V6-V8 region amplicon. To modify the values for other regions, align an example sequence (a small set of samples or the same fragment from E. coli 16S rRNA gene) with the same tool and check where it is placed in the reference.)
+
+Open `aligned-summary.tsv`.
+
+```
+Where in the reference alignment do most of the sequences align? 
+Are there deviants?
+```
+
+Open also `custom.reference.summary.tsv`.
+
+```
+How long are the longest homopolymers in the reference? 
+How many sequences does the reference contain?
+```
+
+**Step 10. Remove sequences which align outside the common alignment range**
+
+Select `aligned.fasta.gz` and `unique.count_table`, and the tool `Screen sequences for several criteria`. Set `Alignment start position = 5963` (where most sequences start based on `aligned-summary.tsv`), `Alignment end position = 12353` (before most sequences end), and `Maximum homopolymer length = 8`. Run the tool.
+
+Open `summary.screened.tsv` as spreadsheet. 
+
+```
+How many unique sequences were removed (hint: compare with aligned-summary.tsv)? 
+How many sequences were removed overall?
+
+Were these sequences removed because: 
+1) they aligned outside the common alignment range, or 
+2) they contained too long homopolymers?
+```
+
+**Step 11. Remove gaps and overhangs from the alignment. If this creates new identical sequences, remove them**
+
+Choose `screened.fasta.gz` and `screened.count_table` and run the tool `Filter sequence alignment`.
+
+Open `filtered-log.txt`. 
+
+```
+How many columns we removed? How long is the alignment now? 
+
+Did the filtering generate new identical sequences, which were subsequently removed 
+(compare summary.screened.tsv and filtered-unique-summary.tsv)?
+```
+
+**Step 12. Precluster the aligned sequences**
+
+Select `filtered-unique.fasta.gz` and `filtered-unique.count_table`, and the tool `Precluster aligned sequences`. Set `Number of differences allowed = 1` and run the tool.
+
+Open `preclustered-summary.tsv`.
+
+```
+How many unique sequences do we have now?
+```
+
+**Step 13. Remove chimeras**
+
+Select `preclustered.fasta.gz` and `preclustered.count_table` and the tool `Remove chimeric sequences`. Select `Reference = none, de novo`, `Method = vsearch` and `Dereplicate = true` and run the tool.
+
+Open `chimeras.removed.summary.tsv`. 
+
+```
+How many chimeras were removed?
+```
+
+**Step 14. Classify sequences**
+
+Choose `chimeras.removed.fasta.gz` and `chimeras.removed.count_table`, and run the tool `Classify 16S or 18S sequences to taxonomic units using Silva.`
+
+Open `classification-summary.tsv` and select Full Screen.
+Sort the table by the taxon column (click on the word taxon). 
+
+```
+Does your data contain chloroplast sequences? 
+```
+
+**Step 15. Share your analysis session with a colleague**
+
+Select your session in the session menu, click on the three dots, and select *Share*. 
+Create a new access rule: enter haka/ekorpela@csc.fi in the UserID field and set Rights = read-only.

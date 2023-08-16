@@ -26,7 +26,7 @@ opts_knit$set(width=75)
 
 **Step 16. Creating `phyloseq` input files**
 
-Choose `chimeras.removed.fasta.gz`, `chimeras.removed.count_table` and `sequences-taxonomy-assignment.txt`. 
+Choose `chimeras.removed.fasta.gz`, `chimeras.removed.count_table` and `sequences-taxonomy-assignment.txt`. Check in *Parameters* that these files are in the correct locations under *Input files* and correct if needed.  
 Next, run the tool `Microbial amplicon dta preprocessing for OTU / Generate input files for phyloseq` so that you select the correct data type (`16S or 18S`) and set a cut-off of 0.03 (i.e. 3%, corresponding to 97% sequence similarity) for OTU clustering.
 
 ```
@@ -93,7 +93,7 @@ iv) There are two further tools for data tidying:
 - Remove OTUs with 0-2 occurrences
 - Proportional prevalence filtering (for removing OTUs that occur in less than specific % of samples)
 
-Selecting `ps_ind.Rda`, run the former tool, making sure that both singletons and doubletons are removed.
+Selecting `ps_ind.Rda`, run the tool `Remove OTUs with 0-2 occurrences`, making sure that both singletons and doubletons are removed. Feel free to test the prevalence filtering tool too if you have time, but it is not necessary for the following exercises.
 
 ```
 Why would we want to remove singletons and doubletons from the data?

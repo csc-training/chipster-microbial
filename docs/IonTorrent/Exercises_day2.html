@@ -849,7 +849,10 @@ margin-left: 0 !important;
 files</strong></p>
 <p>Choose <code>chimeras.removed.fasta.gz</code>,
 <code>chimeras.removed.count_table</code> and
-<code>sequences-taxonomy-assignment.txt</code>. Next, run the tool
+<code>sequences-taxonomy-assignment.txt</code>. Check in
+<em>Parameters</em> that these files are in the correct locations under
+<em>Input files</em> and correct if needed.<br />
+Next, run the tool
 <code>Microbial amplicon dta preprocessing for OTU / Generate input files for phyloseq</code>
 so that you select the correct data type (<code>16S or 18S</code>) and
 set a cut-off of 0.03 (i.e. 3%, corresponding to 97% sequence
@@ -940,8 +943,11 @@ Which bacterial groups are most common and abundant in the data?</code></pre>
 <li>Proportional prevalence filtering (for removing OTUs that occur in
 less than specific % of samples)</li>
 </ul>
-<p>Selecting <code>ps_ind.Rda</code>, run the former tool, making sure
-that both singletons and doubletons are removed.</p>
+<p>Selecting <code>ps_ind.Rda</code>, run the tool
+<code>Remove OTUs with 0-2 occurrences</code>, making sure that both
+singletons and doubletons are removed. Feel free to test the prevalence
+filtering tool too if you have time, but it is not necessary for the
+following exercises.</p>
 <pre><code>Why would we want to remove singletons and doubletons from the data?
 Can you think of situations where these should be kept as part of the dataset?</code></pre>
 <p><strong>Step 20. Sequence numbers, rarefaction curve and alpha

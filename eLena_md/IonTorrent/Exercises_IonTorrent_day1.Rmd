@@ -168,7 +168,7 @@ Were these sequences removed because:
 2) they contained too long homopolymers?
 ```
 
-**Step 11. Remove gaps and overhangs from the alignment. If this creates new identical sequences, remove them**
+**Step 11. Remove gaps and overhangs from the alignment. If this creates new identical sequences, they will be removed**
 
 Choose `screened.fasta.gz` and `screened.count_table` and run the tool `Filter sequence alignment`.
 

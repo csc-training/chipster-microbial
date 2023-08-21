@@ -40,11 +40,13 @@ The `Generate input files for phyloseq` tool produces a phenodata file (a file t
 
 i) Select the file `file.opti_mcc.shared` and in the *Selected files* choose the tab *Phenodata*.
 
-ii) Create new columns called `site` and `bagging` by clicking `+ Add column`. 
+ii) In the column `description`, write the sample names as you want them to appear in result plots. For example, *HPc1*, *HPc2* etc. The names must be unique for each sample.
 
-iii) Check how the sample names in the column `sample` start, and based on this enter the site codes `HP` and `KEK` in the column `site`. Next, check the characters after `HP`and `KEK` in the sample names. When the next character is c, fill in `control` in the column `bagging`. When the next characters are `ps`, fill in `bagged` in the column `bagging`.
+iii) Create new columns called `site` and `bagging` by clicking `+ Add column`. You delete the column `chiptype` or adjust the width of the columns to make space if necessary.
 
-Check that your filled in phenodata table matches the example below.
+iv) Check how the sample names in the column `sample` start, and based on this enter the site codes `HP` and `KEK` in the column `site`. Next, check the characters after `HP`and `KEK` in the sample names. When the next character is c, fill in `control` in the column `bagging`. When the next characters are `ps`, fill in `bagged` in the column `bagging`.
+
+Check that your filled in phenodata table matches the example below (especially the last two columns).
 
 ![](Images/phenodata_IonTorrent.png?raw=true)  
 
@@ -53,7 +55,7 @@ Check that your filled in phenodata table matches the example below.
 
 Finally! `r emo::ji("smile")` We are done with pre-processing and ready to convert our files into a `phyloseq` object that will be used in the community analysis steps.
 
-Select the Mothur shared file `file.opti_mcc.shared` and constaxonomy file `file.opti_mcc.0.03.cons.taxonomy`. Select the tool `Convert Mothur files into phyloseq object`. In *Parameters*, specify the phenodata column including unique IDs for each community profile (the column `sample`). Run the tool.
+Select the Mothur shared file `file.opti_mcc.shared` and constaxonomy file `file.opti_mcc.0.03.cons.taxonomy`. Select the tool `Convert Mothur files into phyloseq object`. In *Parameters*, specify the phenodata column including unique IDs for each community profile (the column `description`). Run the tool.
 
 This tool produces two files: 
 
@@ -129,7 +131,7 @@ After all, we don't want to blindly rely on statistical test output!
 
 Select `ps_pruned.Rda` and run the `Transform OTU counts` tool, selecting `Relative abundances (%)` as the data treatment. We can use relative abundance data to produce bar plots.
 
-This will produce a file called `ps_relabund.Rda`. Select it and run the `OTU relative abundance bar plots` tool, making sure that you have the `Sample` column selected in `Phenodata variable with sequencing sample IDs`. There are quite a few other parameters here that you can also modify. Feel free to play around with the options but start with these:
+This will produce a file called `ps_relabund.Rda`. Select it and run the `OTU relative abundance bar plots` tool, making sure that you have the `description` column selected in `Phenodata variable with sequencing sample IDs`. There are quite a few other parameters here that you can also modify. Feel free to play around with the options but start with these:
 
 - 1 in Relative abundance cut-off threshold (%) for excluding OTUs
 - Class as the level of biological organisation
@@ -152,7 +154,7 @@ Going back to `ps_pruned.Rda`, let's also visualise the data using a multivariat
 ```
 Why might we want to use CLR transformation here, instead of % relative abundances?
 ```
-Selecting the resulting file `ps_clr.Rda`, run the `Distance matrices and ordinations` tool. Once again, one must specify a column in the phenodata with unique IDs for each sample (i.e. the `Sample` column). There are options for Euclidean and Bray-Curtis distances - choose Euclidean and for the ordination type, select nMDS. Also colour the ordination points by choosing `site` in `Phenodata variable for grouping ordination points by colour` and define the shape by choosing `bagging` in `Phenodata variable for grouping ordination points by shape`.
+Selecting the resulting file `ps_clr.Rda`, run the `Distance matrices and ordinations` tool. Once again, one must specify a column in the phenodata with unique IDs for each sample (i.e. the `description` column). There are options for Euclidean and Bray-Curtis distances - choose Euclidean and for the ordination type, select nMDS. Also colour the ordination points by choosing `site` in `Phenodata variable for grouping ordination points by colour` and define the shape by choosing `bagging` in `Phenodata variable for grouping ordination points by shape`.
 
 Here, we are using Aitchinson distances because we carried out a CLR transformation and chose Euclidean distances. An alternative approach would be to continue from the rarefied dataset (`ps_rarefied.Rda`) and use Bray-Curtis dissimilarities to produce the nMDS. In addition to nMDS, there is another ordination type (db-RDA), but let's focus on the nMDS for now.
 

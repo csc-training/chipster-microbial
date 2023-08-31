@@ -27,7 +27,7 @@ opts_knit$set(width=75)
 **Step 16. Creating `phyloseq` input files**
 
 Choose `chimeras.removed.fasta.gz`, `chimeras.removed.count_table` and `sequences-taxonomy-assignment.txt`. Check in *Parameters* that these files are in the correct locations under *Input files* and correct if needed.  
-Next, run the tool `Microbial amplicon dta preprocessing for OTU / Generate input files for phyloseq` so that you select the correct data type (`16S or 18S`) and set a cut-off of 0.03 (i.e. 3%, corresponding to 97% sequence similarity) for OTU clustering.
+Next, run the tool `Microbial amplicon dta preprocessing for OTU / Cluster sequences to OTUs and classify them` so that you select the correct data type (`16S or 18S`) and set a cut-off of 0.03 (i.e. 3%, corresponding to 97% sequence similarity) for OTU clustering.
 
 ```
 Why are we using a dissimilarity threshold of 3%? 
@@ -82,7 +82,7 @@ sequences in a bacterial dataset - isn't that a little strange?
 
 There are a few more additional tools for data tidying. Let's first get an overview of the distribution of OTUs in our data. 
 
-iii) Selecting `ps_ind.Rda`, run the `Additional prevalence summaries` tool. This will produce both a prevalence plot (`ps_prevalence.pdf`) and a text summary (`ps_low.txt`). The plot has a prevalence threshold of 5% drawn as a default guess for prevalence filtering.
+iii) Selecting `ps_ind.Rda`, run the `Prevalence summaries` tool. This will produce both a prevalence plot (`ps_prevalence.pdf`) and a text summary (`ps_low.txt`). The plot has a prevalence threshold of 5% drawn as a default guess for prevalence filtering.
 
 ```
 How many doubletons are there in the data set?
@@ -135,7 +135,7 @@ This will produce a file called `ps_relabund.Rda`. Select it and run the `OTU re
 
 - 1 in Relative abundance cut-off threshold (%) for excluding OTUs
 - Class as the level of biological organisation
-- site as the phenodata variable 1 for plot faceting
+- site as the phenodata variable 1 for dividing the plot into subplots
 
 The result should look close to this (click on the thumbnail to expand the image):
 

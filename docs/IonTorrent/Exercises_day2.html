@@ -853,7 +853,7 @@ files</strong></p>
 <em>Parameters</em> that these files are in the correct locations under
 <em>Input files</em> and correct if needed.<br />
 Next, run the tool
-<code>Microbial amplicon dta preprocessing for OTU / Generate input files for phyloseq</code>
+<code>Microbial amplicon dta preprocessing for OTU / Cluster sequences to OTUs and classify them</code>
 so that you select the correct data type (<code>16S or 18S</code>) and
 set a cut-off of 0.03 (i.e. 3%, corresponding to 97% sequence
 similarity) for OTU clustering.</p>
@@ -869,7 +869,7 @@ moment to work on the phenodata.</p>
 <em>Selected files</em> choose the tab <em>Phenodata</em>.</p></li>
 <li><p>In the column <code>description</code>, write the sample names as
 you want them to appear in result plots. For example, <em>HPc1</em>,
-<em>HPc2</em> etc.</p></li>
+<em>HPc2</em> etc. The names must be unique for each sample.</p></li>
 <li><p>Create new columns called <code>site</code> and
 <code>bagging</code> by clicking <code>+ Add column</code>. You delete
 the column <code>chiptype</code> or adjust the width of the columns to
@@ -895,8 +895,8 @@ community analysis steps.</p>
 constaxonomy file <code>file.opti_mcc.0.03.cons.taxonomy</code>. Select
 the tool <code>Convert Mothur files into phyloseq object</code>. In
 <em>Parameters</em>, specify the phenodata column including unique IDs
-for each community profile (the column <code>sample</code>). Run the
-tool.</p>
+for each community profile (the column <code>description</code>). Run
+the tool.</p>
 <p>This tool produces two files:</p>
 <ul>
 <li>a <code>phyloseq</code> object (stored as <code>ps.Rda</code>)</li>
@@ -932,10 +932,10 @@ sequences in a bacterial dataset - isn&#39;t that a little strange?</code></pre>
 get an overview of the distribution of OTUs in our data.</p>
 <ol start="3" style="list-style-type: lower-roman">
 <li>Selecting <code>ps_ind.Rda</code>, run the
-<code>Additional prevalence summaries</code> tool. This will produce
-both a prevalence plot (<code>ps_prevalence.pdf</code>) and a text
-summary (<code>ps_low.txt</code>). The plot has a prevalence threshold
-of 5% drawn as a default guess for prevalence filtering.</li>
+<code>Prevalence summaries</code> tool. This will produce both a
+prevalence plot (<code>ps_prevalence.pdf</code>) and a text summary
+(<code>ps_low.txt</code>). The plot has a prevalence threshold of 5%
+drawn as a default guess for prevalence filtering.</li>
 </ol>
 <pre><code>How many doubletons are there in the data set?
 Do you have an advance idea about what the term &quot;prevalence&quot; refers to?
@@ -996,7 +996,8 @@ play around with the options but start with these:</p>
 <li>1 in Relative abundance cut-off threshold (%) for excluding
 OTUs</li>
 <li>Class as the level of biological organisation</li>
-<li>site as the phenodata variable 1 for plot faceting</li>
+<li>site as the phenodata variable 1 for dividing the plot into
+subplots</li>
 </ul>
 <p>The result should look close to this (click on the thumbnail to
 expand the image):</p>

@@ -39,7 +39,8 @@ To update an existing repo on your computer, use 'git pull' in the repo director
 cd newrepo
 git checkout -b yourbranch
 
-3.3 Make the changes in the R Markdown file on your own computer. Convert the markdown file into html. For example in RStudio, use 'Knit' to create the html. Move the html file to the 'docs' folder.
+3.3 Make the changes in the R Markdown file on your own computer. Convert the markdown file into html. 
+For example in RStudio, use 'Knit' to create the html. Move the html file to the 'docs' folder.
 
 3.4 Submit the changes to Github:
 git add -A

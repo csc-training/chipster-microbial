@@ -1,0 +1,51 @@
+Updating the chipster-microbial repo (CSC internal instructions):
+
+This repository contains the exercises of the microbial community analysis courses with Chipster
+(+ some related materials).
+
+
+1. Access:
+
+Ask an owner for access to the csc-training repo if you are not already a member.
+
+
+2. Structure of the repo: 
+
+markdown: R markdown files for the exercises 
+	MiSeq: MiSeq 16S exercises
+	IonTorrent: Ion Torrent 16S exercises
+
+docs: html versions of the same markdown files (can be linked to course participants)
+	note: the repo is configured with Github Pages to look for the displayed files in 
+	the docs folder in root (this can be changed in Settings)
+
+README.md: determines what is shown on the front page
+
+Getting started with Github Pages that the site is based on:
+https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
+
+
+3. Editing the materials: 
+
+Because the markdown files need to be converted to html, the easiest way is to edit the markdown 
+files on your own computer, convert into html and then upload both files to Github (markdown in 
+the folder markdown, html in the folder docs). 
+
+3.1 Start with 'git clone [path of the repo]' on your own terminal. Find the path of the repo on 
+the front page under Code -> ssh. For this you should have ssh keys set up for git/Github. 
+To update an existing repo on your computer, use 'git pull' in the repo directory.
+
+3.2 After cloning, navigate to the repo folder and make a new branch:
+cd newrepo
+git checkout -b yourbranch
+
+3.3 Make the changes in the R Markdown file on your own computer. Convert the markdown file into html. For example in RStudio, use 'Knit' to create the html. Move the html file to the 'docs' folder.
+
+3.4 Submit the changes to Github:
+git add -A
+git commit -m "message about what has been changed"
+git branch [to double check the branch name for the next command]
+git push origin -u yourbranch
+
+-> copy and open the web address from the output, create a pull request in Github, merge. Done!
+

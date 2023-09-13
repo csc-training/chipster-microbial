@@ -8,9 +8,9 @@
 
 [Lecture videos (May 2021)](https://www.youtube.com/playlist?list=PLjiXAZO27elBjPaknlze6BkxebpEuj9KL)
 
-[Day 1 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_MiSeq_day1.html)
+[Day 1 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_day1.html)
 
-[Day 2 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_MiSeq_day2.html)
+[Day 2 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_day2.html)
 
 ---
 

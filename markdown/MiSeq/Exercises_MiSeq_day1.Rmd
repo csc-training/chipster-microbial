@@ -34,7 +34,7 @@ All samples were sequenced using Illumina MiSeq. We have overlapping 251 bp pair
 
 **Step 1. Start Chipster and open a session**
 
-Go to [the Chipster website](https://chipster.rahtiapp.fi/) and log in. In the session list, scroll down to *Training sessions* and select *course_16S_rRNA_community_analysis_MiSeq*. This session has 38 zipped fastq files. Save your own copy of the session: click the three dots in the *Session info* section and select *Save a copy*.
+Go to [the Chipster website](https://chipster.rahtiapp.fi/) and log in. In the session list, scroll down to *Training sessions* and select *course_16S_rRNA_community_analysis_MiSeq*. This session has 38 zipped fastq files. Save your own copy of the session: click the three dots in the *Session info* section and select *Rename*.
 
 **Step 2. Package all the fastq files in a tar package**
 

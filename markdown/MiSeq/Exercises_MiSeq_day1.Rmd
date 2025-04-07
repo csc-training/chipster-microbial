@@ -46,7 +46,7 @@ Select all the fastq files:
 
 Note that after this point in real life you can delete the individual fastq files, because you can always open the tar package using the tool `Utilities / Extract .tar.gz file`.
 
-**Step 3. Check the quality of reads with FastQC**
+**Step 3. Check the quality of reads with MultiQC**
 
 Select the file `zippedFastq.tar` and the tool `Quality control / Read quality with MultiQC for many FASTQ files`, and click *Run*. Select the result file and click *Open in new tab*.
 

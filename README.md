@@ -6,7 +6,7 @@
 
 [Chipster web app](https://chipster.rahtiapp.fi/)
 
-[Lecture videos (May 2021)](https://www.youtube.com/playlist?list=PLjiXAZO27elBjPaknlze6BkxebpEuj9KL)
+[Lecture videos (2023)](https://www.youtube.com/playlist?list=PLjiXAZO27elBjPaknlze6BkxebpEuj9KL)
 
 [Day 1 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_day1.html)
 

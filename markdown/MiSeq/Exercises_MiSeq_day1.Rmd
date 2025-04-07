@@ -67,9 +67,9 @@ traffic light bar above the plot)?
 
 **Step 4. Remove primers and adapters**
 
-Here we skip this step, because our data has already processed to remove primers and sequencing adapters. **When you are working with your own data that still contains primers and adapters, it is important to remove them.** In Chipster, you can use the tool `Remove primers and adapters with Cutadapt` in the category `Preprocessing` to remove them. 
+Here we skip this step, because our data was already processed to remove primers and sequencing adapters. **When you are working with your own data that still contains primers and adapters, it is important to remove them.** In Chipster, you can use the tool `Remove primers and adapters with Cutadapt` in the category `Preprocessing` to remove them. 
 
-In parameters, you would set `Is the data paired end or single end reads = paired`, `5' adapter` is the forward primer, and `3'adapter` is the reverse primer as it appears in the forward reads, usually reverse complement of the reserve primer. You can use the tool `Identify primers and the correct orientation` in category `Microbial amplicon data preprocessing for ASV` to check how the orientation of the primers, get the reverse complement version of the reverse primer and check that the primers have been removed correctly.
+In parameters, you would set `Is the data paired end or single end reads = paired`, `5' adapter` is the forward primer, and `3'adapter` is the reverse primer as it appears in the forward reads, usually reverse complement of the reserve primer. You can use the tool `Identify primers and the correct orientation` in category `Microbial amplicon data preprocessing for ASV` to check the orientation of the primers, get the reverse complement version of the reverse primer and check that the primers have been removed correctly.
 
 But in this exercise data set, primers and adapters have already been removed, so let's continue to the next step:
 

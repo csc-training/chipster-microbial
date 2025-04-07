@@ -36,7 +36,7 @@ Can you think of examples where another threshold might be more appropriate?
 
 **Step 18. Filling in the phenodata file**
 
-The `Generate input files for phyloseq` tool produces a phenodata file (a file type in Chipster used for documenting sample groupings). Before proceeding with downstream analyses, let's take a moment to work on the phenodata. We'll focus on two sample groupings that we're interested in: `group` and `time`.
+The `Cluster sequences to OTUs and classify them` tool produces a phenodata file (a file type in Chipster used for documenting sample groupings). Before proceeding with downstream analyses, let's take a moment to work on the phenodata. We'll focus on two sample groupings that we're interested in: `group` and `time`.
 
 i) Select `phenodata-file.opti_mcc.shared` and in *Selected files* choose the tab *Phenodata*. 
 ii) Remove the columns `chiptype` and `description` by clicking the `x`. Create a new column called `time`.

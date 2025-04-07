@@ -77,7 +77,7 @@ But in this exercise data set, primers and adapters have already been removed, s
 
 Select `zippedFastq.tar` and run the tool `Microbial amplicon data preprocessing for OTU / Combine paired reads to contigs with VSEARCH`.
 
-Select `summary_stats.tsv` and view is as Spreadsheet.
+Select `summary_stats.tsv` and view it as Spreadsheet.
 ```
 Are there roughly the same number of merged pairs in each sample?
 What percentage of read pairs were not merged?
@@ -97,9 +97,9 @@ What percentage of contigs were discarded?
 When would this step be particularly useful?
 ```
 
-**Step 7. Combine contigs into one FASTA file and create count file**
+**Step 7. Combine contigs into one FASTA file and create a count file**
 
-Select `filtered.contigs.tar` and run the tool `Combine FASTQ files into one FASTA file and make a mothur count file`.
+Select `filtered.contigs.tar` and run the tool `Combine FASTQ files into one FASTA file and make a Mothur count file`.
 
 Select `sequences-summary.tsv` and view it as spreadsheet. 
 ```

@@ -42,7 +42,7 @@ Select all the fastq files:
 
 - Go to the *List* tab, click on the first file, keep the shift key down and click on the last file. 
 - Select the tool `Utilities / Make a Tar package`. 
-- Click *Parameters*, set `File name for tar package = zippedFastq`, and click *Run*. 
+- Click *Parameters*, set `File name for tar package = zippedFastq`, and click *Run tool (1 job)*. 
 
 Note that after this point in real life you can delete the individual fastq files, because you can always open the tar package using the tool `Utilities / Extract .tar.gz file`.
 

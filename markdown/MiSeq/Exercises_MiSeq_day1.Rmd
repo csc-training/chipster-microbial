@@ -99,7 +99,7 @@ When would this step be particularly useful?
 
 **Step 7. Combine contigs into one FASTA file and create a count file**
 
-Select `filtered.contigs.tar` and run the tool `Combine FASTQ files into one FASTA file and make a Mothur count file`.
+Select `filtered_contigs.tar` and run the tool `Combine FASTQ files into one FASTA file and make a Mothur count file`.
 
 Select `sequences-summary.tsv` and view it as spreadsheet. 
 ```
@@ -112,16 +112,16 @@ Open the sequences.count_table file as a
 spreadsheet. What information does it contain?
 ```
 
-**(Step 8. Remove suspiciously long sequences and sequences containing ambiguous bases)**
+**Step 8. Remove suspiciously long sequences and sequences containing ambiguous bases**
 
-If you see any suspiciously long contigs or contigs that contain ambiguous bases, this tool can be used to remove those. In this example there should be none, so **we skip this step here**.
+If you see any suspiciously long contigs or contigs that contain ambiguous bases, this tool can be used to remove those. In this example there should be none, but let's run this step anyway to get familiar with the tool.
 
 Choose `sequences.fasta.gz` and `sequences.count_table` (use ctrl / cmd key to select multiple files). Select the tool `Screen sequences for several criteria`, set `Maximum length of the sequences = 275` and `Maximum number of ambiguous bases = 0`, and run the tool.
 
 Open `summary.screened.tsv` as spreadsheet. 
 ```
-Did we manage to remove all the overly long contigs and ambiguous bases? 
-How many sequences are left?
+In general, pay attention here if all the overly long contigs and ambiguous bases were removed, and how many sequences are left.
+In this example, why was no new count file created?
 ```
 
 **Step 9. Remove identical sequences**

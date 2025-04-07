@@ -918,7 +918,7 @@ removed, so let’s continue to the next step:</p>
 contigs</strong></p>
 <p>Select <code>zippedFastq.tar</code> and run the tool
 <code>Microbial amplicon data preprocessing for OTU / Combine paired reads to contigs with VSEARCH</code>.</p>
-<p>Select <code>summary_stats.tsv</code> and view is as Spreadsheet.</p>
+<p>Select <code>summary_stats.tsv</code> and view it as Spreadsheet.</p>
 <pre><code>Are there roughly the same number of merged pairs in each sample?
 What percentage of read pairs were not merged?
 What is the mean number of expected errors?
@@ -931,10 +931,10 @@ correctly to samples.</code></pre>
 <p>Select <code>summary.tsv</code>.</p>
 <pre><code>What percentage of contigs were discarded?
 When would this step be particularly useful?</code></pre>
-<p><strong>Step 7. Combine contigs into one FASTA file and create count
-file</strong></p>
-<p>Select <code>filtered.contigs.tar</code> and run the tool
-<code>Combine FASTQ files into one FASTA file and make a mothur count file</code>.</p>
+<p><strong>Step 7. Combine contigs into one FASTA file and create a
+count file</strong></p>
+<p>Select <code>filtered_contigs.tar</code> and run the tool
+<code>Combine FASTQ files into one FASTA file and make a Mothur count file</code>.</p>
 <p>Select <code>sequences-summary.tsv</code> and view it as
 spreadsheet.</p>
 <pre><code>How many sequences are there in the data? 
@@ -944,11 +944,12 @@ How many contigs are there in total?
 
 Open the sequences.count_table file as a 
 spreadsheet. What information does it contain?</code></pre>
-<p><strong>(Step 8. Remove suspiciously long sequences and sequences
-containing ambiguous bases)</strong></p>
+<p><strong>Step 8. Remove suspiciously long sequences and sequences
+containing ambiguous bases</strong></p>
 <p>If you see any suspiciously long contigs or contigs that contain
 ambiguous bases, this tool can be used to remove those. In this example
-there should be none, so <strong>we skip this step here</strong>.</p>
+there should be none, but let’s run this step anyway to get familiar
+with the tool.</p>
 <p>Choose <code>sequences.fasta.gz</code> and
 <code>sequences.count_table</code> (use ctrl / cmd key to select
 multiple files). Select the tool
@@ -957,8 +958,8 @@ multiple files). Select the tool
 <code>Maximum number of ambiguous bases = 0</code>, and run the
 tool.</p>
 <p>Open <code>summary.screened.tsv</code> as spreadsheet.</p>
-<pre><code>Did we manage to remove all the overly long contigs and ambiguous bases? 
-How many sequences are left?</code></pre>
+<pre><code>In general, pay attention here if all the overly long contigs and ambiguous bases were removed, and how many sequences are left.
+In this example, why was no new count file created?</code></pre>
 <p><strong>Step 9. Remove identical sequences</strong></p>
 <p>Select <code>sequences.fasta.gz</code> and
 <code>sequences.count_table</code>, and run the tool

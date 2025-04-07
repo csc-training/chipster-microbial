@@ -41,6 +41,7 @@ Go to [the Chipster website](https://chipster.2.rahtiapp.fi/) and log in. In the
 Select all the FASTQ files: 
 
 - Go to the *List* tab, click on the first file, keep the shift key down and click on the last file. 
+
 - Select the toolset `NGS`, category `Utilities`, and scroll down to the tool `Make a Tar package` and select it.
 - Click *Parameters*, set `File name for tar package = zippedFastq`, and click *Run*. Select `Run Tool 1 job`.
 

@@ -53,7 +53,7 @@ The end result should look like this:
 
 Finally! `r emo::ji("smile")` We are done with pre-processing and ready to convert our files into a `phyloseq` object that will be used in the community analysis steps.
 
-Select the Mothur shared file `file.opti_mcc.shared` and constaxonomy file. Run the `Convert Mothur files into phyloseq object` tool, noticing that here we need to specify the phenodata column including unique IDs for each community profile (in our case, the column `sample`).
+Select the Mothur shared file `file.opti_mcc.shared` and the taxonomy file `file.opti_mcc.0.03.cons.taxonomy`. Run the `Convert Mothur files into phyloseq object` tool, noticing that here we need to specify the phenodata column including unique IDs for each community profile (in our case, the column `sample`).
 
 This tool produces two files: 
 
@@ -132,8 +132,9 @@ Select `ps_pruned.Rda` and run the `Transform OTU counts` tool, selecting `Relat
 
 This will produce a file called `ps_relabund.Rda`. Select it and run the `OTU relative abundance bar plots` tool, making sure that you have the `Sample` column selected in `Phenodata variable with sequencing sample IDs`. There are quite a few other parameters here that you can also modify. Feel free to play around with the options but start with these:
 
+- 2 as the relative abundance cut-off threshold (%) for excluding OTUs
 - Family as the level of biological organisation
-- `time` as the phenodata variable 1 for plot faceting
+- time as the phenodata variable 1 for plot faceting
 
 The result should look close to this (click on the thumbnail to expand the image):
 
@@ -211,7 +212,7 @@ Choosing that dataset and the `Transform OTU counts` tool, select `DEseq2 format
 
 Of these, `deseq2.Rda` can be used for DESeq2.
 
-Selecting `deseq2.Rda`, run the `Differential OTU abundance analysis using DESeq2` tool, with the number of sample groups set to 2, the lower-level taxonomic grouping to Class and the higher-level grouping to Phylum.
+Selecting `deseq2.Rda`, run the `Differential OTU abundance analysis using DESeq2` tool, with the number of sample groups set to 2, the lower-level taxonomic grouping to Family and the higher-level grouping to Phylum.
 
 Take a moment to inspect the results table (`deseq2_otutable.tsv`) and results plot (`deseq2_otuplot.pdf`).
 

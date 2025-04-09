@@ -22,9 +22,9 @@ opts_knit$set(width=75)
 
 # **Day 2: Microbial community analysis**
 
-### **Getting the data into `phyloseq`**
+### **Clustering sequences into OTUs**
 
-**Step 17. Creating `phyloseq` input files**
+**Step 17. Clustering sequences into OTUs, classifying OTUs, and creating `phyloseq` input files**
 
 Choose `chimeras.removed.fasta.gz`, `chimeras.removed.count_table` and `sequences-taxonomy-assignment.txt`. 
 Next, run the tool `Cluster sequences to OTUs and classify them` so that you select the correct data type (`16S or 18S`) and set a dissimilarity threshold of 0.03 (i.e. 3%, corresponding to 97% sequence similarity) for OTU clustering.
@@ -33,6 +33,7 @@ Next, run the tool `Cluster sequences to OTUs and classify them` so that you sel
 Why are we using a dissimilarity threshold of 3%? 
 Can you think of examples where another threshold might be more appropriate?
 ```
+### **Getting the data into `phyloseq`**
 
 **Step 18. Filling in the phenodata file**
 

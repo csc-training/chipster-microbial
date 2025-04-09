@@ -126,7 +126,7 @@ In this example, why was no new count file created?
 
 **Step 9. Remove identical sequences**
 
-Select `sequences.fasta.gz` and `sequences.count_table`, and run the tool `Extract unique sequences`.
+Select `screened.fasta.gz` and `sequences.count_table`, and run the tool `Extract unique sequences`.
 
 Open `unique.summary.tsv`.
 ```

@@ -843,10 +843,10 @@ margin-left: 0 !important;
 <div id="content">
 <div id="day-2-microbial-community-analysis" class="section level1">
 <h1><strong>Day 2: Microbial community analysis</strong></h1>
-<div id="getting-the-data-into-phyloseq" class="section level3">
-<h3><strong>Getting the data into <code>phyloseq</code></strong></h3>
-<p><strong>Step 17. Creating <code>phyloseq</code> input
-files</strong></p>
+<div id="clustering-sequences-into-otus" class="section level3">
+<h3><strong>Clustering sequences into OTUs</strong></h3>
+<p><strong>Step 17. Clustering sequences into OTUs, classifying OTUs,
+and creating <code>phyloseq</code> input files</strong></p>
 <p>Choose <code>chimeras.removed.fasta.gz</code>,
 <code>chimeras.removed.count_table</code> and
 <code>sequences-taxonomy-assignment.txt</code>. Next, run the tool
@@ -856,6 +856,9 @@ dissimilarity threshold of 0.03 (i.e. 3%, corresponding to 97% sequence
 similarity) for OTU clustering.</p>
 <pre><code>Why are we using a dissimilarity threshold of 3%? 
 Can you think of examples where another threshold might be more appropriate?</code></pre>
+</div>
+<div id="getting-the-data-into-phyloseq" class="section level3">
+<h3><strong>Getting the data into <code>phyloseq</code></strong></h3>
 <p><strong>Step 18. Filling in the phenodata file</strong></p>
 <p>The <code>Cluster sequences to OTUs and classify them</code> tool
 produces a phenodata file (a file type in Chipster used for documenting

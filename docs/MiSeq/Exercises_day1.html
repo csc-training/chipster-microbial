@@ -867,14 +867,14 @@ dots in the <em>Session info</em> section and select
 package</strong></p>
 <p>Select all the FASTQ files:</p>
 <ul>
-<li>Go to the <em>List</em> tab, click on the first file, keep the shift
-key down and click on the last file.</li>
-<li>Select the toolset <code>NGS</code>, category
+<li><p>Go to the <em>List</em> tab, click on the first file, keep the
+shift key down and click on the last file.</p></li>
+<li><p>Select the toolset <code>NGS</code>, category
 <code>Utilities</code>, and scroll down to the tool
-<code>Make a Tar package</code> and select it.</li>
-<li>Click <em>Parameters</em>, set
+<code>Make a Tar package</code> and select it.</p></li>
+<li><p>Click <em>Parameters</em>, set
 <code>File name for tar package = zippedFastq</code>, and click
-<em>Run</em>. Select <code>Run Tool 1 job</code>.</li>
+<em>Run</em>. Select <code>Run Tool 1 job</code>.</p></li>
 </ul>
 <p>Note that after this point in real life you can delete the individual
 FASTQ files, because you can always open the tar package using the tool
@@ -896,7 +896,7 @@ good all along the reads?
 Do the samples marked with red have something in common (click the
 traffic light bar above the plot)?</code></pre>
 <p><strong>Step 4. Remove primers and adapters</strong></p>
-<p>Here we skip this step, because our data has already processed to
+<p>Here we skip this step, because our data was already processed to
 remove primers and sequencing adapters. <strong>When you are working
 with your own data that still contains primers and adapters, it is
 important to remove them.</strong> In Chipster, you can use the tool
@@ -909,7 +909,7 @@ important to remove them.</strong> In Chipster, you can use the tool
 forward reads, usually reverse complement of the reserve primer. You can
 use the tool <code>Identify primers and the correct orientation</code>
 in category <code>Microbial amplicon data preprocessing for ASV</code>
-to check how the orientation of the primers, get the reverse complement
+to check the orientation of the primers, get the reverse complement
 version of the reverse primer and check that the primers have been
 removed correctly.</p>
 <p>But in this exercise data set, primers and adapters have already been
@@ -961,7 +961,7 @@ tool.</p>
 <pre><code>In general, pay attention here if all the overly long contigs and ambiguous bases were removed, and how many sequences are left.
 In this example, why was no new count file created?</code></pre>
 <p><strong>Step 9. Remove identical sequences</strong></p>
-<p>Select <code>sequences.fasta.gz</code> and
+<p>Select <code>screened.fasta.gz</code> and
 <code>sequences.count_table</code>, and run the tool
 <code>Extract unique sequences</code>.</p>
 <p>Open <code>unique.summary.tsv</code>.</p>

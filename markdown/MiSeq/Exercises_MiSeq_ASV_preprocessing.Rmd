@@ -1,0 +1,180 @@
+---
+output:
+  rmdformats::html_clean:
+    highlight: kate
+---
+
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+# Exercises
+**Microbial community / eDNA analysis with Chipster**
+
+The exercise data (obtained from https://mothur.org/wiki/miseq_sop/) consist of the following 19 mouse fecal samples collected after weaning from one mouse, female 3 (F3):
+
+- 9 early samples, collected on days 0-9 post weaning (D0-D9)
+- 10 late samples, collected on days 141-150 post weaning (D141-D150)
+
+**Our aim in these exercises is to find out if the early samples differ from the late samples in terms of microbial community structure.** All samples were sequenced using Illumina MiSeq. We have overlapping 251 bp paired end reads which come from the 253 bp long V4 region of the 16S rRNA gene. Prior to the analysis, the samples were demultiplexed to individual FASTQ files and primers were removed. 
+
+We have uploaded the data (38 zipped FASTQ files) to the Chipster server for you. Using the Utilities tool `Make a Tar` package we put the FASTQ files in a Tar package and named it `zippedFastq.tar`.  We then deleted the individual FASTQ files, because you can always open the tar package using the tool `Utilities / Extract .tar.gz file` if you need them. Finally, we named the session `course_ASV_16S_rRNA_MiSeq` and made it available for you under `Training sessions` in Chipster. 
+
+## Part 1: Preprocessing with DADA2
+
+This part is based on the DADA2 tutorial: https://benjjneb.github.io/dada2/tutorial.html.
+
+### 1. Start Chipster and open a session
+
+Go to the Chipster website https://chipster.csc.fi/ and log in. In the session list, scroll down to `Training sessions` and select `course_ASV_16S_rRNA_MiSeq`. Save your own copy of the session: click the three dots in the `Session info` section and select `Rename`. Give a name that includes your first name.
+
+### 2. Check the quality of reads with MultiQC 
+
+Select the file `zippedFastq.tar` and the `tool Quality control / Read quality with MultiQC for many FASTQ files`, and click `Run`. Select the result file and click `Open in new tab`.
+
+```
+How long are the reads (in the `General Statistics` section, click `Configure  
+columns`, and select `Average Read Length`)?
+
+Based on the plot `Sequence Counts`, do all the samples have the same number of  
+reads? Are most of the reads unique?
+
+Based on the plot `Sequence Quality Histograms`, is the base quality good all  
+along the reads? Do the samples marked with red have something in common (click  
+the traffic light bar above the plot)? Based on this plot, how would you trim   
+the reads?
+```
+
+### 3. Not needed now: Remove primers with Cutadapt
+
+Primers and were already removed from our exercise data, but **when working with your own data that still contains primers and adapters, it is important to remove them**. To remove primers, you would do the following:
+
+Select the `Preprocessing` category tool `Remove primers and adapters with Cutadapt`. In the parameters, 5' adapter is the forward primer, and 3'adapter is the reverse primer as it appears in the forward reads, usually the reverse complement of the reverse primer. You can use the tool `Identify primers and the correct orientation` to check the orientation of the primers, get the reverse complement version of the reverse primer, and check that the primers have been removed correctly. This tool is located in the category `Microbial amplicon preprocessing for ASV`.
+
+### 4. Trim and filter reads with DADA2 
+
+Go to the tool category `Microbial amplicon data preprocessing for ASV` and select the tool `Filter and trim sequences with DADA2`. Use the following parameter values:
+
+- `Truncate forward reads after this amount of bases` = 240
+- `Truncate reverse reads after this amount of bases` = 160
+- `Discard input sequences with more than specified number of Ns` = 0
+- `Discard forward sequences with more than the specified number of expected errors` = 2
+- `Discard reverse sequences with more than the specified number of expected errors` = 2
+- `Truncate reads after this base quality` = 2
+
+```
+Open the file `summary.tsv` and check if most reads were kept. 
+```
+Select the file `filtered.fastqs.tar` and run the MultiQC tool again to see the difference after trimming and filtering.
+
+### 5. Estimate error rates and infer amplicon sequence variants (ASVs)
+
+The Chipster tool Sample Inference combines the DADA2 functions `learnErrors()` and `dada()`. Note that all the ambiguous bases need to be removed before (as we did in the previous step). Select the file `filtered.fastqs.tar` and run the tool so that you set the parameter `Visualize the estimated error rates = yes`.
+
+```
+Open the file summary.txt. How many unique sequences were found in the forward  
+reads of the first sample? How many ASVs were inferred from these sequences?
+
+Open the file plotErrors.pdf. Are the estimated error rates (black line) a good  
+fit to the observed rates (points)? Do the estimated error rates drop as the  
+consensus quality scores increase?
+```
+
+### 6. Merge denoised forward and reverse reads to contigs 
+
+As input, select the files `dada_forward.Rda`, `dada_reverse.Rda` and `filtered.fastqs.tar` and run the tool `Combine paired reads to contigs with  DADA2`. 
+
+```
+Open the file contigs_summary.tsv. How many contigs were produced for the first  
+sample?
+```
+
+### 7. Remove chimeras
+Select the file contigs.Rda and run the tool Make an ASV table and remove chimeras. 
+
+Open the file `summary.txt`. 
+
+```
+How many ASVs were there to start with and how long are the majority of them?
+How many ASVs are left after removing chimeras?
+```
+
+Open the file `reads_summary.tsv`. 
+
+```
+How many sequences are left in the first sample after removing chimeras?
+```
+
+Open the ASV table `sequence_table_nochim.tsv`. 
+
+```
+How many times does ASV1 occur in the first sample?
+```
+
+### 8. Assign taxonomy
+
+Select the file `seqtab_nochim.Rda` and run the tool `Assign taxonomy`.
+
+Open the file `taxa_seqtab_combined.tsv`. Click on the link `Full screen`. 
+
+```
+How many of the first ten ASVs were assigned to a genus?
+```
+
+Then, sort the table by the `Order` column (click on Order text). 
+
+```
+Are there ASVs representing chloroplasts?
+```
+
+### 9. Create a Phyloseq object and enter sample information in the phenodata
+
+Select the files `taxonomy-assignment-matrix.Rda` and `seqtab_nochim.Rda` and run the tool `Make a phyloseq object` so that you make sure that the input objects were correctly assigned (open the parameter panel and go to the `Input files` section).
+
+Select the file `ps_nophe.Rda` and click `Phenodata`. 
+
+- Remove the columns `chiptype` and `description` by clicking the x. Create a new column called `time`. Label all the early samples (D0-D9) with **early**, and the late samples (D141-D150) with **late**.
+
+- Fill in the group column: Enter **a** for all samples ending with an **even number**,  and **b** for all samples ending with an *odd number**.
+
+The end result should look like this:
+
+![](Images/pheno_layout_asv.png?raw=true)
+
+Open the file `ps_summary.txt`. 
+
+```
+How many ASVs and samples does the Phyloseq object contain?
+```
+
+### 10. Merge phenodata to the Phyloseq object
+
+Select the file `ps_nophe.Rda` and run the tool `Merge phenodata` to the Phyloseq object so that you set the parameter `Phenodata variable containing the sample IDs = sample`.
+
+```
+Open the file ps_sample_summary.txt. What was added to the Phyloseq object?
+```
+
+Now we are ready to proceed to data analysis with Phyloseq in part 2 of the exercises.
+
+### 11. BONUS: Explore the Phyloseq object
+
+Select the file `ps.Rda` and the tool `Extract information from the phyloseq object` from the tool category `Microbial amplicon data analyses.` Run the tool so that you set all the parameters to yes.
+
+```
+Open the result files. What kind of information is stored in the Phyloseq  
+object at this stage? 
+```
+

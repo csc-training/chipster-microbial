@@ -1,0 +1,206 @@
+---
+output:
+  rmdformats::html_clean:
+    highlight: kate
+---
+
+
+```{r setup, echo=FALSE, cache=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+# Exercises
+**Microbial community / eDNA analysis with Chipster**
+
+## Part 2: Data analysis with Phyloseq
+
+We continue with data analysis of amplicon sequencing data from mouse fecal samples to find out if microbial communities at early and late time points are different. The preprocessing steps with DADA2 in part 1 of the exercises produced a phyloseq object (`ps.Rda`), which is the starting point in this section.
+
+### 1. Filter by taxonomic group and remove selected taxa
+
+First, let’s remove any sequences that are not from our target group Bacteria. Select `ps.Rda` and the tool `Filter by taxonomic group`. In the parameters, set the `Group to retain = Bacteria`. This helps ensure that we only keep those data that are classified as Bacteria at the domain level.
+
+```
+How many ASVs were removed?
+```
+
+Let’s remove any chloroplast and mitochondrial sequences. Select the file `ps_bacteria.Rda` and the tool `Remove selected taxa`. Set `Remove order Chloroplast = yes` and `Remove family Mitochondria = yes` and run the tool. You could also use this tool to filter out other specific taxa such as known contaminants.
+
+```
+How many ASVs were removed? 
+
+Why might you expect to see chloroplast or mitochondrial sequences in  
+a bacterial dataset? 
+```
+### 2. Get an overview of the distribution of ASVs in our data.
+
+Select the file `ps_ind.Rda` run the `Prevalence summaries` tool. This will produce both a prevalence plot (ps_prevalence.pdf) and a text summary (ps_low.txt). The plot has a prevalence threshold of 5% drawn as a default guess for prevalence filtering (dashed horizontal line).
+
+```
+How many doubletons are there in the data set?
+
+What does the term "prevalence" refer to?
+
+Which bacterial phyla are most common and abundant in the data?
+```
+
+If you have time, you can also try the tool `Overview of taxon composition` with the file ps_ind.Rda at the taxonomic level of your choice. This tool shows the number of ASVs in each category of the selected taxonomic level.
+
+### 3. Removing ASVs based on the number of occurrences 
+
+By default, this tool removes ASVs occurring in the data 0, 1 or 2 times (singletons and doubletons). It can be set to remove ASVs below any number of occurrences in the data set. The purpose is to remove ASVs considered as potential errors or noise. (Note that one could also use the tool `Proportional prevalence filtering` for removing ASVs that occur in less than specific % of samples). 
+
+```
+Is using this tool to remove singletons and doubletons necessary here? Why?
+
+Can you think of situations where singletons and doubletons should specifically  
+be kept as part of the dataset?
+```
+
+Optional: to test using the tool `Remove OTUs with specified number of occurrences`, select `ps_ind.Rda`, change the filtering threshold if wanted, and run the tool. 
+
+### 4. Check sequence numbers, rarefaction curve and alpha diversity indices
+
+Select the file `ps_ind.Rda` and run the tool `Sequence numbers, rarefaction curve and alpha diversity estimates` so that you set the `Phenodata variable for showing grouping = time` to compare the alpha diversity values between early and late samples.
+
+```
+Can you already make some basic inferences about the data based on the  
+rarefaction curve and alpha diversity values?
+
+Based on the rarefaction curve, what do you think might be best - proceeding  
+as is or rarefying the data to even depth?
+```
+
+Select the file `ps_ind.Rda` and run the tool `Rarefy OTU data to even depth`. Select the resulting dataset `ps_rarefied.Rda` and re-run the tool `Sequence numbers, rarefaction curve and alpha diversity estimates`.
+
+```
+Would you compare alpha diversity based on non-rarefied or rarefied data?
+```
+
+### 5. Taking a closer look at patterns: Stacked taxon composition bar plots
+
+At this point, we have many alternatives that depend on the study goals. Let’s say that, in our case, the goal is to compare the overall community structure between early and late samples (with individual ASVs being of limited interest at this stage).
+
+Nevertheless, first we probably want to visualise the data and compare the early and late samples in more detail. After all, we don’t want to blindly rely on statistical test output!
+
+Select *ps_ind.Rda* and run the tool *Transform OTU counts* so that you select *Data treatment =  Relative abundances (%)*. We will use relative abundance data to produce bar plots.
+
+This will produce a file called *ps_relabund.Rda*. Select it and run the tool `Relative abundance bar plots` so that you set the 
+
+- `Phenodata variable with sequencing sample IDs` = sample
+- `Relative abundance cut-off threshold (%) for excluding OTUs` = 2
+- `Level of biological organisation for tabulating taxon composition` = Family
+- `Phenodata variable 1 for dividing plots to subplots` = time
+
+The result should look close to this:
+
+![](Images/taxbar_asv.png?raw=true)
+
+```
+Based on the plot, what would you anticipate - are the time points likely  
+to differ?
+
+Can you think of ways to make the plot more informative?
+```
+
+### 6. Visualise the data using a multivariate ordination
+
+Transform the data first: Select the file `ps_ind.Rda` and run the tool `Transform OTU counts` so that you set `Data treatment  = Centered log-ratio transformation with pseudocount (CLR)`.
+
+```
+Why might we want to use CLR transformation here, instead of % relative  
+abundances?
+```
+
+Select the resulting file `ps_clr.Rda` and run the tool `Distance matrices and ordinations` with parameters 
+
+- `Type of distance measure` = Euclidean
+- `Type of ordination` = nMDS
+- `Phenodata variable with sequencing sample IDs` = sample
+- `Phenodata variable for grouping ordination points by colour` = time
+- `Phenodata variable for grouping ordination points by shape` = group
+
+```
+Looking at the ordination (ps_ordiplot.pdf), what features stand out? 
+Does it look like any difference between groups could be due to  
+a "location effect", "dispersion effect" or both? 
+What is the advantage of plotting individual sample names here?
+
+What is the stress value of the nMDS (in ps_ordi.txt)? Why is it important?
+```
+
+Here, we are using Aitchinson distances because we carried out a CLR transformation and chose Euclidean distances. An alternative approach would be to continue from the rarefied dataset (`ps_rarefied.Rda`) and use Bray-Curtis dissimilarities to produce the nMDS. In addition to nMDS, there is another ordination type db-RDA. 
+
+**BONUS:** Produce a db-RDA plot: select the file `ps_clr.Rda`, Euclidean distance measure, and db-RDA as the type of ordination. Also select time as the phenovariable in the section `Phenodata variable 1 for db-RDA formula specification`.  Consider when you might want to use db-RDA rather than nMDS?
+
+### 7. Statistics: permutational multivariate analysis of variance (PERMANOVA)
+
+The `Distance matrices and ordinations` tool also produced a distance matrix `ps_dist.Rda` that we can use for statistical testing. Select it and run the tool `Global PERMANOVA for OTU abundance data with parameters``
+
+- `PERMANOVA formula` = Main effects only 
+- `Phenodata variable 1` = time
+
+```
+What does the word "global" mean here?
+
+How would you interpret the results (global_permanova.txt)? 
+
+Does the time variable (early versus late samples) explain community variation  
+in our data?
+```
+
+Select `ps_dist.Rda` and run the tool `PERMDISP for OTU abundance data` using the same phenodata variable as above.
+
+```
+What does PERMDISP stand for? Why would we want to use it?
+
+Comparing the output of this test (permdisp.txt) with the global PERMANOVA  
+results, can you confirm whether the PERMANOVA result is due to a location or  
+dispersion effect? 
+
+Does the result match your earlier anticipations based on inspecting the  
+ordination?
+```
+
+There are also two post-hoc pairwise tests (PERMANOVA and Tukey’s) for further community comparisons. We do not need those for the present dataset, since we are only comparing two groups at a time.
+
+### 8. Differential abundance analysis with DESeq2
+
+If we were interested in ASV-level differences between sample groups, we could turn to differential abundance analysis with DESeq2 instead of PERMANOVA. For this, let’s return to the untransformed dataset (`ps_ind.Rda`).
+
+Select the file `ps_ind.Rda` and the tool `Transform OTU counts`, using the parameters 
+
+- `Data treatment` = DEseq2 format conversion and variance-stabilizing transformation
+- `Phenodata variable used for DESeq2 conversion` = time
+
+We get two files as a result: `ps_vst.Rda` and `deseq2.Rda`. Of these, `deseq2.Rda` is used for DESeq2.
+
+Select `deseq2.Rda` and run the tool `Differential OTU abundance analysis using DESeq2`, with
+
+- `No. of sample groups under the phenodata variable` = 2
+- `Lower-level taxonomic grouping` = Family
+- `Higher-level taxonomic grouping` = Phylum
+
+Take a moment to inspect the results table (`deseq2_otutable.tsv`) and results plot (`deseq2_otuplot.pdf`).
+
+```
+Do some taxa seem more responsible for community-level differences than others?
+
+Which time point is the reference level in the comparison, early or late?
+
+Are ASVs with positive log2 fold change values more abundant in early or late  
+samples?
+```
+
+

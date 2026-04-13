@@ -42,7 +42,7 @@ Go to the Chipster website https://chipster.csc.fi/ and log in. In the session l
 
 ### 2. Check the quality of reads with MultiQC 
 
-Select the file `zippedFastq.tar` and the `tool Quality control / Read quality with MultiQC for many FASTQ files`, and click `Run`. Select the result file and click `Open in new tab`.
+Select the file `zippedFastq.tar` and the tool `Quality control / Read quality with MultiQC for many FASTQ files`, and click `Run`. Select the result file and click `Open in new tab`.
 
 ```
 How long are the reads (in the `General Statistics` section, click `Configure  
@@ -74,40 +74,48 @@ Go to the tool category `Microbial amplicon data preprocessing for ASV` and sele
 - `Discard reverse sequences with more than the specified number of expected errors` = 2
 - `Truncate reads after this base quality` = 2
 
-```
+
 Open the file `summary.tsv` and check if most reads were kept. 
-```
+
 Select the file `filtered.fastqs.tar` and run the MultiQC tool again to see the difference after trimming and filtering.
 
 ### 5. Estimate error rates and infer amplicon sequence variants (ASVs)
 
-The Chipster tool Sample Inference combines the DADA2 functions `learnErrors()` and `dada()`. Note that all the ambiguous bases need to be removed before (as we did in the previous step). Select the file `filtered.fastqs.tar` and run the tool so that you set the parameter `Visualize the estimated error rates = yes`.
+The Chipster tool `Sample inference` combines the DADA2 functions `learnErrors()` and `dada()`. Note that all the ambiguous bases need to be removed before (as we did in the previous step). Select the file `filtered.fastqs.tar` and run the tool so that you set the parameter `Visualize the estimated error rates = yes`.
+
+Open the file `summary.txt`. 
 
 ```
-Open the file summary.txt. How many unique sequences were found in the forward  
+How many unique sequences were found in the forward  
 reads of the first sample? How many ASVs were inferred from these sequences?
+```
 
-Open the file plotErrors.pdf. Are the estimated error rates (black line) a good  
-fit to the observed rates (points)? Do the estimated error rates drop as the  
-consensus quality scores increase?
+Open the file `plotErrors.pdf`. 
+
+```
+Are the estimated error rates (black line) a good fit to the observed rates (points)? 
+Do the estimated error rates drop as the consensus quality scores increase?
 ```
 
 ### 6. Merge denoised forward and reverse reads to contigs 
 
 As input, select the files `dada_forward.Rda`, `dada_reverse.Rda` and `filtered.fastqs.tar` and run the tool `Combine paired reads to contigs with  DADA2`. 
 
+Open the file `contigs_summary.tsv`. 
+
 ```
-Open the file contigs_summary.tsv. How many contigs were produced for the first  
-sample?
+How many contigs were produced for the first  sample?
 ```
 
 ### 7. Remove chimeras
-Select the file contigs.Rda and run the tool Make an ASV table and remove chimeras. 
+
+Select the file `contigs.Rda` and run the tool `Make an ASV table and remove chimeras`. 
 
 Open the file `summary.txt`. 
 
 ```
 How many ASVs were there to start with and how long are the majority of them?
+
 How many ASVs are left after removing chimeras?
 ```
 
@@ -152,7 +160,6 @@ Select the file `ps_nophe.Rda` and click `Phenodata`.
 The end result should look like this:
 
 ![](Images/pheno_layout_asv.png?raw=true)
-
 Open the file `ps_summary.txt`. 
 
 ```
@@ -163,18 +170,20 @@ How many ASVs and samples does the Phyloseq object contain?
 
 Select the file `ps_nophe.Rda` and run the tool `Merge phenodata` to the Phyloseq object so that you set the parameter `Phenodata variable containing the sample IDs = sample`.
 
+Open the file `ps_sample_summary.txt`. 
+
 ```
-Open the file ps_sample_summary.txt. What was added to the Phyloseq object?
+What was added to the Phyloseq object?
 ```
 
 Now we are ready to proceed to data analysis with Phyloseq in part 2 of the exercises.
 
-### 11. BONUS: Explore the Phyloseq object
+### 11. Bonus: Explore the Phyloseq object
 
 Select the file `ps.Rda` and the tool `Extract information from the phyloseq object` from the tool category `Microbial amplicon data analyses.` Run the tool so that you set all the parameters to yes.
 
 ```
-Open the result files. What kind of information is stored in the Phyloseq  
-object at this stage? 
+Open the result files. What kind of information is stored in the Phyloseq  object   
+at this stage? 
 ```
 

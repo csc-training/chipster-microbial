@@ -99,7 +99,8 @@ Do the estimated error rates drop as the consensus quality scores increase?
 
 ### 6. Merge denoised forward and reverse reads to contigs 
 
-As input, select the files `dada_forward.Rda`, `dada_reverse.Rda` and `filtered.fastqs.tar` and run the tool `Combine paired reads to contigs with  DADA2`. 
+As input, select the files `dada_forward.Rda`, `dada_reverse.Rda` and `filtered.fastqs.tar` and run the tool `Combine paired reads to contigs with  DADA2`.  To select multiple files, hold down the control key (in Windows/Linux) or the command 
+key (Mac) and then click the files.
 
 Open the file `contigs_summary.tsv`. 
 
@@ -151,15 +152,16 @@ Are there ASVs representing chloroplasts?
 
 Select the files `taxonomy-assignment-matrix.Rda` and `seqtab_nochim.Rda` and run the tool `Make a phyloseq object` so that you make sure that the input objects were correctly assigned (open the parameter panel and go to the `Input files` section).
 
-Select the file `ps_nophe.Rda` and click `Phenodata`. 
+Select the file `ps_nophe.Rda` and click `Phenodata` on the right. 
 
-- Remove the columns `chiptype` and `description` by clicking the x. Create a new column called `time`. Label all the early samples (D0-D9) with **early**, and the late samples (D141-D150) with **late**.
+- Remove the columns `chiptype` and `description` by clicking the x. Click the green `+ Add column` button and create a new column called `time` . In the time column, label all the early samples (D0-D9) with **early**, and the late samples (D141-D150) with **late** by typing and/or copy-pasting in the empty cells.
 
 - Fill in the group column: Enter **a** for all samples ending with an **even number**,  and **b** for all samples ending with an *odd number**.
 
 The end result should look like this:
 
 ![](Images/pheno_layout_asv.png?raw=true)
+
 Open the file `ps_summary.txt`. 
 
 ```

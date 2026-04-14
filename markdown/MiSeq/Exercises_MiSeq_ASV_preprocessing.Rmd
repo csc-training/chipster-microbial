@@ -65,7 +65,7 @@ Select the `Preprocessing` category tool `Remove primers and adapters with Cutad
 
 ### 4. Trim and filter reads with DADA2 
 
-Go to the tool category `Microbial amplicon data preprocessing for ASV` and select the tool `Filter and trim sequences with DADA2`. Use the following parameter values:
+Select the file `zippedFastq.tar`. Go to the tool category `Microbial amplicon data preprocessing for ASV` and select the tool `Filter and trim sequences with DADA2`. Use the following parameter values:
 
 - `Truncate forward reads after this amount of bases` = 240
 - `Truncate reverse reads after this amount of bases` = 160

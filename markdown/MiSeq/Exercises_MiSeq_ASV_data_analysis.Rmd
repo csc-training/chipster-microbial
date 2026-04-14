@@ -35,15 +35,14 @@ First, let’s remove any sequences that are not from our target group Bacteria.
 How many ASVs were removed?
 ```
 
-Let’s remove any chloroplast and mitochondrial sequences. Select the file `ps_bacteria.Rda` and the tool `Remove selected taxa`. Set `Remove order Chloroplast = yes` and `Remove family Mitochondria = yes` and run the tool. You could also use this tool to filter out other specific taxa such as known contaminants.
+Next, let’s remove any chloroplast and mitochondrial sequences. Select the file `ps_bacteria.Rda` and the tool `Remove selected taxa`. Set `Remove order Chloroplast = yes` and `Remove family Mitochondria = yes` and run the tool. You could also use this tool to filter out other specific taxa such as known contaminants.
 
 ```
 How many ASVs were removed? 
 
-Why might you expect to see chloroplast or mitochondrial sequences in  
-a bacterial dataset? 
+Why might you expect to see chloroplast or mitochondrial sequences in a bacterial dataset? 
 ```
-### 2. Get an overview of the distribution of ASVs in our data.
+### 2. Get an overview of the distribution of ASVs in our data
 
 Select the file `ps_ind.Rda` run the `Prevalence summaries` tool. This will produce both a prevalence plot (ps_prevalence.pdf) and a text summary (ps_low.txt). The plot has a prevalence threshold of 5% drawn as a default guess for prevalence filtering (dashed horizontal line).
 
@@ -55,7 +54,7 @@ What does the term "prevalence" refer to?
 Which bacterial phyla are most common and abundant in the data?
 ```
 
-If you have time, you can also try the tool `Overview of taxon composition` with the file ps_ind.Rda at the taxonomic level of your choice. This tool shows the number of ASVs in each category of the selected taxonomic level.
+If you have time, you can also try the tool `Overview of taxon composition` with the file `ps_ind.Rda` at the taxonomic level of your choice. This tool shows the number of ASVs in each category of the selected taxonomic level.
 
 ### 3. Removing ASVs based on the number of occurrences 
 
@@ -64,8 +63,8 @@ By default, this tool removes ASVs occurring in the data 0, 1 or 2 times (single
 ```
 Is using this tool to remove singletons and doubletons necessary here? Why?
 
-Can you think of situations where singletons and doubletons should specifically  
-be kept as part of the dataset?
+Can you think of situations where singletons and doubletons should specifically be kept  
+as part of the dataset?
 ```
 
 Optional: to test using the tool `Remove OTUs with specified number of occurrences`, select `ps_ind.Rda`, change the filtering threshold if wanted, and run the tool. 
@@ -77,9 +76,6 @@ Select the file `ps_ind.Rda` and run the tool `Sequence numbers, rarefaction cur
 ```
 Can you already make some basic inferences about the data based on the  
 rarefaction curve and alpha diversity values?
-
-Based on the rarefaction curve, what do you think might be best - proceeding  
-as is or rarefying the data to even depth?
 ```
 
 Select the file `ps_ind.Rda` and run the tool `Rarefy OTU data to even depth`. Select the resulting dataset `ps_rarefied.Rda` and re-run the tool `Sequence numbers, rarefaction curve and alpha diversity estimates`.
@@ -92,11 +88,11 @@ Would you compare alpha diversity based on non-rarefied or rarefied data?
 
 At this point, we have many alternatives that depend on the study goals. Let’s say that, in our case, the goal is to compare the overall community structure between early and late samples (with individual ASVs being of limited interest at this stage).
 
-Nevertheless, first we probably want to visualise the data and compare the early and late samples in more detail. After all, we don’t want to blindly rely on statistical test output!
+First we probably want to visualise the data and compare the early and late samples in more detail. After all, we don’t want to blindly rely on statistical test output!
 
-Select *ps_ind.Rda* and run the tool *Transform OTU counts* so that you select *Data treatment =  Relative abundances (%)*. We will use relative abundance data to produce bar plots.
+Select `ps_ind.Rda` and run the tool `Transform OTU counts` so that you select `Data treatment =  Relative abundances (%)`. We will use relative abundance data to produce bar plots.
 
-This will produce a file called *ps_relabund.Rda*. Select it and run the tool `Relative abundance bar plots` so that you set the 
+This will produce a file called `ps_relabund.Rda`. Select it and run the tool `Relative abundance bar plots` so that you set the 
 
 - `Phenodata variable with sequencing sample IDs` = sample
 - `Relative abundance cut-off threshold (%) for excluding OTUs` = 2
@@ -108,19 +104,17 @@ The result should look close to this:
 ![](Images/taxbar_asv.png?raw=true)
 
 ```
-Based on the plot, what would you anticipate - are the time points likely  
-to differ?
+Based on the plot, what would you anticipate - are the time points likely to differ?
 
 Can you think of ways to make the plot more informative?
 ```
 
 ### 6. Visualise the data using a multivariate ordination
 
-Transform the data first: Select the file `ps_ind.Rda` and run the tool `Transform OTU counts` so that you set `Data treatment  = Centered log-ratio transformation with pseudocount (CLR)`.
+Before running a multivariate ordination to visualize the community variation in our data, let's transform the data first: Select the file `ps_ind.Rda` and run the tool `Transform OTU counts` so that you set `Data treatment  = Centered log-ratio transformation with pseudocount` (CLR).
 
 ```
-Why might we want to use CLR transformation here, instead of % relative  
-abundances?
+Why might we want to use CLR transformation here, instead of % relative abundances?
 ```
 
 Select the resulting file `ps_clr.Rda` and run the tool `Distance matrices and ordinations` with parameters 
@@ -133,22 +127,22 @@ Select the resulting file `ps_clr.Rda` and run the tool `Distance matrices and o
 
 ```
 Looking at the ordination (ps_ordiplot.pdf), what features stand out? 
-Does it look like any difference between groups could be due to  
-a "location effect", "dispersion effect" or both? 
+Does it look like any difference between groups could be due to a "location effect",   
+"dispersion effect" or both? 
 What is the advantage of plotting individual sample names here?
 
 What is the stress value of the nMDS (in ps_ordi.txt)? Why is it important?
 ```
 
-Here, we are using Aitchinson distances because we carried out a CLR transformation and chose Euclidean distances. An alternative approach would be to continue from the rarefied dataset (`ps_rarefied.Rda`) and use Bray-Curtis dissimilarities to produce the nMDS. In addition to nMDS, there is another ordination type db-RDA. 
+Here, we are using Aitchinson distances because we carried out a CLR transformation and chose Euclidean distances. An alternative approach would be to continue from the rarefied dataset (`ps_rarefied.Rda`) and use Bray-Curtis dissimilarities to produce the nMDS. In addition to nMDS, there is another ordination type db-RDA (distance-based reduncancy analysis). 
 
-**BONUS:** Produce a db-RDA plot: select the file `ps_clr.Rda`, Euclidean distance measure, and db-RDA as the type of ordination. Also select time as the phenovariable in the section `Phenodata variable 1 for db-RDA formula specification`.  Consider when you might want to use db-RDA rather than nMDS?
+**BONUS:** Produce a db-RDA plot: select the file `ps_clr.Rda`, and in the tool `Distance matrices and ordinations`, select `Euclidean` distance measure and `db-RDA` as the type of ordination. Also select `time` as the phenovariable in the section `Phenodata variable 1 for db-RDA formula specification`. Use the phenodata variable `time` to colour the ordination points.  Consider when you might want to use db-RDA rather than nMDS?
 
-### 7. Statistics: permutational multivariate analysis of variance (PERMANOVA)
+### 7. Statistical testing for differences in community composition: permutational multivariate analysis of variance (PERMANOVA)
 
-The `Distance matrices and ordinations` tool also produced a distance matrix `ps_dist.Rda` that we can use for statistical testing. Select it and run the tool `Global PERMANOVA for OTU abundance data with parameters``
+The `Distance matrices and ordinations` tool also produced a distance matrix `ps_dist.Rda` that we can use for statistical testing. Select it and run the tool `Global PERMANOVA for OTU abundance data` with parameters
 
-- `PERMANOVA formula` = Main effects only 
+- `Main effects only vs. main effects and interactions?` = Main effects only 
 - `Phenodata variable 1` = time
 
 ```
@@ -160,7 +154,7 @@ Does the time variable (early versus late samples) explain community variation
 in our data?
 ```
 
-Select `ps_dist.Rda` and run the tool `PERMDISP for OTU abundance data` using the same phenodata variable as above.
+Select `ps_dist.Rda` and run the tool `PERMDISP for OTU abundance data` using the same phenodata variable as above (time).
 
 ```
 What does PERMDISP stand for? Why would we want to use it?
@@ -177,7 +171,7 @@ There are also two post-hoc pairwise tests (PERMANOVA and Tukey’s) for further
 
 ### 8. Differential abundance analysis with DESeq2
 
-If we were interested in ASV-level differences between sample groups, we could turn to differential abundance analysis with DESeq2 instead of PERMANOVA. For this, let’s return to the untransformed dataset (`ps_ind.Rda`).
+If we were interested in ASV-level differences between sample groups, we could turn to differential abundance analysis with DESeq2. For this, let’s return to the untransformed dataset (`ps_ind.Rda`).
 
 Select the file `ps_ind.Rda` and the tool `Transform OTU counts`, using the parameters 
 

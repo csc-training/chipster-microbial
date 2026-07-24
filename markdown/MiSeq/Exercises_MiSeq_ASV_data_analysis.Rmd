@@ -67,7 +67,7 @@ Can you think of situations where singletons and doubletons should specifically 
 as part of the dataset?
 ```
 
-Optional: to test using the tool `Remove OTUs with specified number of occurrences`, select `ps_ind.Rda`, change the filtering threshold if wanted, and run the tool. 
+Optional: to test using the tool `Remove OTUs/ASVs with specified number of occurrences`, select `ps_ind.Rda`, change the filtering threshold if wanted, and run the tool. 
 
 ### 4. Check sequence numbers, rarefaction curve and alpha diversity indices
 
@@ -78,7 +78,7 @@ Can you already make some basic inferences about the data based on the
 rarefaction curve and alpha diversity values?
 ```
 
-Select the file `ps_ind.Rda` and run the tool `Rarefy OTU data to even depth`. Select the resulting dataset `ps_rarefied.Rda` and re-run the tool `Sequence numbers, rarefaction curve and alpha diversity estimates`.
+Select the file `ps_ind.Rda` and run the tool `Rarefy OTU/ASV data to even depth`. Select the resulting dataset `ps_rarefied.Rda` and re-run the tool `Sequence numbers, rarefaction curve and alpha diversity estimates`.
 
 ```
 Would you compare alpha diversity based on non-rarefied or rarefied data?
@@ -90,12 +90,12 @@ At this point, we have many alternatives that depend on the study goals. Let’s
 
 First we probably want to visualise the data and compare the early and late samples in more detail. After all, we don’t want to blindly rely on statistical test output!
 
-Select `ps_ind.Rda` and run the tool `Transform OTU counts` so that you select `Data treatment =  Relative abundances (%)`. We will use relative abundance data to produce bar plots.
+Select `ps_ind.Rda` and run the tool `Transform OTU/ASV counts` so that you select `Data treatment =  Relative abundances (%)`. We will use relative abundance data to produce bar plots.
 
 This will produce a file called `ps_relabund.Rda`. Select it and run the tool `Relative abundance bar plots` so that you set the 
 
 - `Phenodata variable with sequencing sample IDs` = sample
-- `Relative abundance cut-off threshold (%) for excluding OTUs` = 2
+- `Relative abundance cut-off threshold (%) for excluding OTUs/ASVs` = 2
 - `Level of biological organisation for tabulating taxon composition` = Family
 - `Phenodata variable 1 for dividing plots to subplots` = time
 
@@ -111,7 +111,7 @@ Can you think of ways to make the plot more informative?
 
 ### 6. Visualise the data using a multivariate ordination
 
-Before running a multivariate ordination to visualize the community variation in our data, let's transform the data first: Select the file `ps_ind.Rda` and run the tool `Transform OTU counts` so that you set `Data treatment  = Centered log-ratio transformation with pseudocount` (CLR).
+Before running a multivariate ordination to visualize the community variation in our data, let's transform the data first: Select the file `ps_ind.Rda` and run the tool `Transform OTU/ASV counts` so that you set `Data treatment  = Centered log-ratio transformation with pseudocount` (CLR).
 
 ```
 Why might we want to use CLR transformation here, instead of % relative abundances?
@@ -127,8 +127,6 @@ Select the resulting file `ps_clr.Rda` and run the tool `Distance matrices and o
 
 ```
 Looking at the ordination (ps_ordiplot.pdf), what features stand out? 
-Does it look like any difference between groups could be due to a "location effect",   
-"dispersion effect" or both? 
 What is the advantage of plotting individual sample names here?
 
 What is the stress value of the nMDS (in ps_ordi.txt)? Why is it important?
@@ -140,7 +138,7 @@ Here, we are using Aitchinson distances because we carried out a CLR transformat
 
 ### 7. Statistical testing for differences in community composition: permutational multivariate analysis of variance (PERMANOVA)
 
-The `Distance matrices and ordinations` tool also produced a distance matrix `ps_dist.Rda` that we can use for statistical testing. Select it and run the tool `Global PERMANOVA for OTU abundance data` with parameters
+The `Distance matrices and ordinations` tool also produced a distance matrix `ps_dist.Rda` that we can use for statistical testing. Select it and run the tool `Global PERMANOVA for OTU/ASV abundance data` with parameters
 
 - `Main effects only vs. main effects and interactions?` = Main effects only 
 - `Phenodata variable 1` = time
@@ -152,12 +150,15 @@ How would you interpret the results (global_permanova.txt)?
 
 Does the time variable (early versus late samples) explain community variation  
 in our data?
+
+Check again the ordination in step 6. Does it look like any difference between groups could be due to a "location effect",   
+"dispersion effect" or both? 
 ```
 
-Select `ps_dist.Rda` and run the tool `PERMDISP for OTU abundance data` using the same phenodata variable as above (time).
+Select `ps_dist.Rda` and run the tool `PERMDISP for OTU/ASV abundance data` using the same phenodata variable as above (time).
 
 ```
-What does PERMDISP stand for? Why would we want to use it?
+What does PERMDISP test for and how does it differ from PERMANOVA? Why would we want to use it?
 
 Comparing the output of this test (permdisp.txt) with the global PERMANOVA  
 results, can you confirm whether the PERMANOVA result is due to a location or  
@@ -173,14 +174,14 @@ There are also two post-hoc pairwise tests (PERMANOVA and Tukey’s) for further
 
 If we were interested in ASV-level differences between sample groups, we could turn to differential abundance analysis with DESeq2. For this, let’s return to the untransformed dataset (`ps_ind.Rda`).
 
-Select the file `ps_ind.Rda` and the tool `Transform OTU counts`, using the parameters 
+Select the file `ps_ind.Rda` and the tool `Transform OTU/ASV counts`, using the parameters 
 
 - `Data treatment` = DEseq2 format conversion and variance-stabilizing transformation
 - `Phenodata variable used for DESeq2 conversion` = time
 
 We get two files as a result: `ps_vst.Rda` and `deseq2.Rda`. Of these, `deseq2.Rda` is used for DESeq2.
 
-Select `deseq2.Rda` and run the tool `Differential OTU abundance analysis using DESeq2`, with
+Select `deseq2.Rda` and run the tool `Differential OTU/ASV abundance analysis using DESeq2`, with
 
 - `No. of sample groups under the phenodata variable` = 2
 - `Lower-level taxonomic grouping` = Family

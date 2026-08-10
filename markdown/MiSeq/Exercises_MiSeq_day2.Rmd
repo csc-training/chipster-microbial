@@ -52,7 +52,7 @@ The end result should look like this:
 
 **Step 19. Producing a `phyloseq` object**
 
-Finally! `r emo::ji("smile")` We are done with pre-processing and ready to convert our files into a `phyloseq` object that will be used in the community analysis steps.
+We are now done with pre-processing and ready to convert our files into a `phyloseq` object that will be used in the community analysis steps.
 
 Select the Mothur shared file `file.opti_mcc.shared` and the taxonomy file `file.opti_mcc.0.03.cons.taxonomy`. Run the `Convert Mothur files into phyloseq object` tool, noticing that here we need to specify the phenodata column including unique IDs for each community profile (in our case, the column `sample`).
 
@@ -92,7 +92,7 @@ Which bacterial groups are most common and abundant in the data?
 
 iv) There are two further tools for data tidying: 
 
-- Remove OTUs with 0-2 occurrences
+- Remove OTUs/ASVs with specified number of occurrences (often used to remove OTUs with 0-2 occurrences)
 - Proportional prevalence filtering (for removing OTUs that occur in less than specific % of samples)
 
 Selecting `ps_ind.Rda`, run the former tool, making sure that both singletons and doubletons are removed.
@@ -114,7 +114,7 @@ Based on the rarefaction curve, what do you think might be
 best - proceeding as is or rarefying the data to even depth?
 ```
 
-Try the `Rarefy OTU data to even depth` tool using the same file `ps_ind.Rda`. Select the resulting dataset `ps_rarefied.Rda`and and re-run the `Sequence numbers...` tool.
+Try the `Rarefy OTU/ASV data to even depth` tool using the same file `ps_ind.Rda`. Select the resulting dataset `ps_rarefied.Rda`and and re-run the `Sequence numbers...` tool.
 
 ```
 Would you compare alpha diversity based on non-rarefied or rarefied data?
@@ -129,9 +129,9 @@ At this point, we have many alternatives that depend on the study goals. Let's s
 Nevertheless, first we probably want to visualise the data and compare the sites and treatments in more detail.
 After all, we don't want to blindly rely on statistical test output!
 
-Select `ps_pruned.Rda` and run the `Transform OTU counts` tool, selecting `Relative abundances (%)` as the data treatment. We can use relative abundance data to produce bar plots.
+Select `ps_pruned.Rda` and run the `Transform OTU/ASV counts` tool, selecting `Relative abundances (%)` as the data treatment. We can use relative abundance data to produce bar plots.
 
-This will produce a file called `ps_relabund.Rda`. Select it and run the `OTU relative abundance bar plots` tool, making sure that you have the `Sample` column selected in `Phenodata variable with sequencing sample IDs`. There are quite a few other parameters here that you can also modify. Feel free to play around with the options but start with these:
+This will produce a file called `ps_relabund.Rda`. Select it and run the `Relative abundance bar plots` tool, making sure that you have the `Sample` column selected in `Phenodata variable with sequencing sample IDs`. There are quite a few other parameters here that you can also modify. Feel free to play around with the options but start with these:
 
 - 2 as the relative abundance cut-off threshold (%) for excluding OTUs
 - Family as the level of biological organisation
@@ -149,7 +149,7 @@ Can you think of another way to visualise the data?
 ```
 **Step 23. Other ways to visualize the data**
 
-Going back to `ps_pruned.Rda`, let's also visualise the data using a multivariate ordination. For this, first use the tool `Transform OTU counts tool` to perform a CLR transformation (`Centered log-ratio transformation with pseudocount`).
+Going back to `ps_pruned.Rda`, let's also visualise the data using a multivariate ordination. For this, first use the tool `Transform OTU/ASV counts` tool to perform a CLR transformation (`Centered log-ratio transformation with pseudocount`).
 
 ```
 Why might we want to use CLR transformation here, instead of % relative abundances?
@@ -180,7 +180,7 @@ When might you want to use db-RDA rather than nMDS?
 Ok! We're ready to run some statistical tests now.
 Let's proceed with a permutational multivariate analysis of variance (PERMANOVA).
 
-The `Distance matrices and ordinations` tool also produced a distance matrix (`ps_dist.Rda`) that we can use for statistical testing. Selecting it, run the `Global PERMANOVA for OTU abundance data` tool, selecting `Main effects only` as the PERMANOVA formula and specifying `time` as `Phenodata variable 1`.
+The `Distance matrices and ordinations` tool also produced a distance matrix (`ps_dist.Rda`) that we can use for statistical testing. Selecting it, run the `Global PERMANOVA for OTU/ASV abundance data` tool, selecting `Main effects only` as the PERMANOVA formula and specifying `time` as `Phenodata variable 1`.
 
 ```
 What does the word "global" mean here?
@@ -189,7 +189,7 @@ How would you interpret the results (global_permanova.txt)?
 Does the time variable (early versus late samples) explain community variation in our data?
 ```
 
-Using `ps_dist.Rda`, also run the `PERMDISP for OTU abundance data` tool, selecting the same phenodata variable. 
+Using `ps_dist.Rda`, also run the `PERMDISP for OTU/ASV abundance data` tool, selecting the same phenodata variable. 
 
 ```
 What does PERMDISP stand for? Why would we want to use it?
@@ -206,14 +206,14 @@ There are also post-hoc pairwise tests for further community comparisons. We do 
 
 If we were interested in OTU-level differences between sample groups, we could turn to differential abundance analysis with DESeq2 instead of PERMANOVA. For this, let's return to the untransformed dataset (`ps_pruned.Rda`).
 
-Choosing that dataset and the `Transform OTU counts` tool, select `DEseq2 format conversion and variance-stabilizing transformation` as the data transformation. For the DESeq2 format conversion, we also need to specify a phenodata variable - for this, use `time`. We get two files as a result:
+Choosing that dataset and the `Transform OTU/ASV counts` tool, select `DEseq2 format conversion and variance-stabilizing transformation` as the data transformation. For the DESeq2 format conversion, we also need to specify a phenodata variable - for this, use `time`. We get two files as a result:
 
 - `ps_vst.Rda`
 - `deseq2.Rda`
 
 Of these, `deseq2.Rda` can be used for DESeq2.
 
-Selecting `deseq2.Rda`, run the `Differential OTU abundance analysis using DESeq2` tool, with the number of sample groups set to 2, the lower-level taxonomic grouping to Family and the higher-level grouping to Phylum.
+Selecting `deseq2.Rda`, run the `Differential OTU/ASV abundance analysis using DESeq2` tool, with the number of sample groups set to 2, the lower-level taxonomic grouping to Family and the higher-level grouping to Phylum.
 
 Take a moment to inspect the results table (`deseq2_otutable.tsv`) and results plot (`deseq2_otuplot.pdf`).
 

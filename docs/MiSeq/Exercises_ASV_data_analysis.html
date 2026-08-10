@@ -902,9 +902,9 @@ ASVs that occur in less than specific % of samples).</p>
 Can you think of situations where singletons and doubletons should specifically be kept  
 as part of the dataset?</code></pre>
 <p>Optional: to test using the tool
-<code>Remove OTUs with specified number of occurrences</code>, select
-<code>ps_ind.Rda</code>, change the filtering threshold if wanted, and
-run the tool.</p>
+<code>Remove OTUs/ASVs with specified number of occurrences</code>,
+select <code>ps_ind.Rda</code>, change the filtering threshold if
+wanted, and run the tool.</p>
 </div>
 <div id="check-sequence-numbers-rarefaction-curve-and-alpha-diversity-indices" class="section level3">
 <h3>4. Check sequence numbers, rarefaction curve and alpha diversity
@@ -917,8 +917,8 @@ the alpha diversity values between early and late samples.</p>
 <pre><code>Can you already make some basic inferences about the data based on the  
 rarefaction curve and alpha diversity values?</code></pre>
 <p>Select the file <code>ps_ind.Rda</code> and run the tool
-<code>Rarefy OTU data to even depth</code>. Select the resulting dataset
-<code>ps_rarefied.Rda</code> and re-run the tool
+<code>Rarefy OTU/ASV data to even depth</code>. Select the resulting
+dataset <code>ps_rarefied.Rda</code> and re-run the tool
 <code>Sequence numbers, rarefaction curve and alpha diversity estimates</code>.</p>
 <pre><code>Would you compare alpha diversity based on non-rarefied or rarefied data?</code></pre>
 </div>
@@ -933,7 +933,7 @@ being of limited interest at this stage).</p>
 and late samples in more detail. After all, we don’t want to blindly
 rely on statistical test output!</p>
 <p>Select <code>ps_ind.Rda</code> and run the tool
-<code>Transform OTU counts</code> so that you select
+<code>Transform OTU/ASV counts</code> so that you select
 <code>Data treatment =  Relative abundances (%)</code>. We will use
 relative abundance data to produce bar plots.</p>
 <p>This will produce a file called <code>ps_relabund.Rda</code>. Select
@@ -942,7 +942,7 @@ you set the</p>
 <ul>
 <li><code>Phenodata variable with sequencing sample IDs</code> =
 sample</li>
-<li><code>Relative abundance cut-off threshold (%) for excluding OTUs</code>
+<li><code>Relative abundance cut-off threshold (%) for excluding OTUs/ASVs</code>
 = 2</li>
 <li><code>Level of biological organisation for tabulating taxon composition</code>
 = Family</li>
@@ -960,7 +960,7 @@ Can you think of ways to make the plot more informative?</code></pre>
 <p>Before running a multivariate ordination to visualize the community
 variation in our data, let’s transform the data first: Select the file
 <code>ps_ind.Rda</code> and run the tool
-<code>Transform OTU counts</code> so that you set
+<code>Transform OTU/ASV counts</code> so that you set
 <code>Data treatment  = Centered log-ratio transformation with pseudocount</code>
 (CLR).</p>
 <pre><code>Why might we want to use CLR transformation here, instead of % relative abundances?</code></pre>
@@ -977,8 +977,6 @@ sample</li>
 = group</li>
 </ul>
 <pre><code>Looking at the ordination (ps_ordiplot.pdf), what features stand out? 
-Does it look like any difference between groups could be due to a &quot;location effect&quot;,   
-&quot;dispersion effect&quot; or both? 
 What is the advantage of plotting individual sample names here?
 
 What is the stress value of the nMDS (in ps_ordi.txt)? Why is it important?</code></pre>
@@ -1004,7 +1002,8 @@ permutational multivariate analysis of variance (PERMANOVA)</h3>
 <p>The <code>Distance matrices and ordinations</code> tool also produced
 a distance matrix <code>ps_dist.Rda</code> that we can use for
 statistical testing. Select it and run the tool
-<code>Global PERMANOVA for OTU abundance data</code> with parameters</p>
+<code>Global PERMANOVA for OTU/ASV abundance data</code> with
+parameters</p>
 <ul>
 <li><code>Main effects only vs. main effects and interactions?</code> =
 Main effects only</li>
@@ -1015,11 +1014,14 @@ Main effects only</li>
 How would you interpret the results (global_permanova.txt)? 
 
 Does the time variable (early versus late samples) explain community variation  
-in our data?</code></pre>
+in our data?
+
+Check again the ordination in step 6. Does it look like any difference between groups could be due to a &quot;location effect&quot;,   
+&quot;dispersion effect&quot; or both? </code></pre>
 <p>Select <code>ps_dist.Rda</code> and run the tool
-<code>PERMDISP for OTU abundance data</code> using the same phenodata
-variable as above (time).</p>
-<pre><code>What does PERMDISP stand for? Why would we want to use it?
+<code>PERMDISP for OTU/ASV abundance data</code> using the same
+phenodata variable as above (time).</p>
+<pre><code>What does PERMDISP test for and how does it differ from PERMANOVA? Why would we want to use it?
 
 Comparing the output of this test (permdisp.txt) with the global PERMANOVA  
 results, can you confirm whether the PERMANOVA result is due to a location or  
@@ -1037,7 +1039,7 @@ dataset, since we are only comparing two groups at a time.</p>
 we could turn to differential abundance analysis with DESeq2. For this,
 let’s return to the untransformed dataset (<code>ps_ind.Rda</code>).</p>
 <p>Select the file <code>ps_ind.Rda</code> and the tool
-<code>Transform OTU counts</code>, using the parameters</p>
+<code>Transform OTU/ASV counts</code>, using the parameters</p>
 <ul>
 <li><code>Data treatment</code> = DEseq2 format conversion and
 variance-stabilizing transformation</li>
@@ -1048,7 +1050,8 @@ time</li>
 <code>deseq2.Rda</code>. Of these, <code>deseq2.Rda</code> is used for
 DESeq2.</p>
 <p>Select <code>deseq2.Rda</code> and run the tool
-<code>Differential OTU abundance analysis using DESeq2</code>, with</p>
+<code>Differential OTU/ASV abundance analysis using DESeq2</code>,
+with</p>
 <ul>
 <li><code>No. of sample groups under the phenodata variable</code> =
 2</li>

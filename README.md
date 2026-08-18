@@ -8,9 +8,21 @@
 
 [Lecture videos (2023)](https://www.youtube.com/playlist?list=PLjiXAZO27elBjPaknlze6BkxebpEuj9KL)
 
-[Day 1 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_day1.html)
+### Exercises
 
-[Day 2 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_day2.html)
+ASV workflow with DADA2-based tools:  
+
+[Day 1 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_ASV_preprocessing.html)  
+
+[Day 2 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_ASV_data_analysis.html)  
+
+OTU workflow with mothur-based tools:  
+
+[Day 1 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_day1.html)  
+
+[Day 2 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_day2.html)  
+
+
 
 ---
 

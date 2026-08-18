@@ -6,17 +6,19 @@
 
 [Chipster web app](https://chipster.rahtiapp.fi/)
 
-[Lecture videos (2023)](https://www.youtube.com/playlist?list=PLjiXAZO27elBjPaknlze6BkxebpEuj9KL)
-
-### Exercises
 
 ASV workflow with DADA2-based tools:  
+
+[Lecture videos (2026)](https://youtube.com/playlist?list=PLjiXAZO27elApE_xX8idUFRbRXNj0m6GU&si)  
 
 [Day 1 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_ASV_preprocessing.html)  
 
 [Day 2 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_ASV_data_analysis.html)  
 
+
 OTU workflow with mothur-based tools:  
+
+[Lecture videos (2023)](https://www.youtube.com/playlist?list=PLjiXAZO27elBjPaknlze6BkxebpEuj9KL)
 
 [Day 1 exercise sheet](https://csc-training.github.io/chipster-microbial/MiSeq/Exercises_day1.html)  
 
